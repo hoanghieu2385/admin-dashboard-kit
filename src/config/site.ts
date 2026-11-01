@@ -6,7 +6,7 @@ export const site = {
   description: "Bộ giao diện quản trị tái sử dụng",
 } as const
 
-/** User demo: Phase 4 sẽ thay bằng dữ liệu truyền từ page. */
+/** User demo cố định cho shell; dự án mới thay bằng dữ liệu user thật của mình. */
 export const demoUser: AdminUser = {
   name: "Nguyễn Văn A",
   email: "admin@example.com",

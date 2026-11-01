@@ -1,0 +1,54 @@
+name: Đề xuất cải tiến
+description: Đề xuất component, template, tài liệu hoặc quy trình mới cho kit.
+title: "[Feature] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Kit ưu tiên tái sử dụng và thay đổi nhỏ nhất. Mô tả **vấn đề** trước, giải pháp sau.
+        Đọc [AGENTS.md](/AGENTS.md) §5 để biết thứ tự ưu tiên khi thêm UI.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Vấn đề
+      description: Nhu cầu nào chưa được đáp ứng? Dự án nào gặp?
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Đề xuất
+      description: Hướng giải quyết, API dự kiến nếu là component/template.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Khu vực
+      options:
+        - Component dùng chung
+        - Page template
+        - Layout / navigation
+        - Tài liệu / AI context
+        - Agent Skill
+        - Tooling
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Cách làm hiện tại
+      description: Bạn đang xử lý bằng component/template nào? Vì sao chưa đủ?
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Xác nhận
+      options:
+        - label: Đã tìm trong `src/components/` và `src/templates/` chưa có thứ tương đương
+        - label: Đề xuất không cần backend/API hoặc dependency mới

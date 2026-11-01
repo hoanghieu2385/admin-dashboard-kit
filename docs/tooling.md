@@ -38,6 +38,7 @@ Chuẩn dùng là **Agent Skills** (`SKILL.md` + frontmatter `name`, `descriptio
 | Cursor / Windsurf | chưa xác minh hỗ trợ Agent Skills | dùng `AGENTS.md`; không tuyên bố tự discover |
 
 - Canonical copy nằm ở `.agents/skills/`. Sửa skill ở đó; `.claude/skills` chỉ là symlink.
+- Đã đối chiếu tài liệu chính thức (2026-11-01): Codex đọc `.agents/skills` từ CWD tới repo root và hỗ trợ symlink; Claude Code đọc `.claude/skills/<id>/SKILL.md` và hỗ trợ symlink folder; OpenCode phiên hiện tại discover đủ 3 skill.
 - Windows không bật symlink: copy thư mục skill vào `.claude/skills/` (chấp nhận trùng lặp cục bộ, không commit bản copy).
 - Cách gọi: Claude Code `/admin-ui-development`; OpenCode `@admin-ui-development` hoặc để agent tự chọn theo `description`;
   Codex `$admin-ui-development` hoặc để agent tự chọn.

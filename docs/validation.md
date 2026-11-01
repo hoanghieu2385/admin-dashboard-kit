@@ -3,7 +3,7 @@
 Biên bản kiểm chứng Phase 6: một AI session **fresh context** nhận repo như template mới và tự xây một module nghiệp vụ.
 
 - Ngày: 2026-11-01
-- Cách chạy: Git worktree tại `61f11d3` trong `/tmp/adk-validation/repo`, overlay toàn bộ thay đổi Phase 6 (chưa commit), `pnpm install --frozen-lockfile`.
+- Cách chạy: Git worktree tách biệt tại `/tmp/adk-validation/repo`. Cây `src/` trùng với commit Phase 6 `ed52fe0`; hai file `docs/components.md`, `docs/page-templates.md` được sửa sau validation theo phát hiện ở §4. Module Suppliers chỉ tồn tại trong worktree, không có trong repo chính.
 - Repo chính **không** chứa module Suppliers; đây là bài kiểm, không phải demo sản phẩm.
 
 ## 1. Prompt dùng nguyên văn
@@ -81,6 +81,7 @@ Route: `/suppliers`, `/suppliers/new`, `/suppliers/:supplierId`, `/suppliers/:su
 
 ### Kiểm UI (session validation)
 
+- Kiểm lại 2026-11-01 bởi session chính: `/suppliers`, `/suppliers/new`, `/suppliers/NCC-1001` render đúng dữ liệu, console 0 error, không tràn ngang ở viewport 1000px.
 - 1280/768/375: không tràn ngang ở document/main; bảng cuộn trong card ở 768/375.
 - Light + dark: đã xem list/detail/form; console 0 error.
 - Flow: search "An Phát" → 1 dòng; lọc trạng thái "Tạm ngưng" → 3; lọc danh mục "Vận chuyển" → 2;

@@ -1,0 +1,78 @@
+name: Báo lỗi
+description: Báo lỗi component, page template, tài liệu hoặc skill trong kit.
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Cảm ơn bạn đã báo lỗi. Vui lòng kiểm tra [CONTRIBUTING.md](/CONTRIBUTING.md) trước khi gửi.
+        Không dán thông tin cá nhân thật hoặc secret.
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: Hiện tượng
+      description: Chuyện gì xảy ra, ở đâu, khi nào.
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Các bước tái hiện
+      placeholder: |
+        1. Vào `/customers`
+        2. Bấm ...
+        3. Thấy ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Kỳ vọng
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Khu vực
+      options:
+        - Component dùng chung
+        - Page template
+        - Layout / navigation
+        - Demo / mock data
+        - Tài liệu / AI context
+        - Agent Skill
+        - Tooling / build
+    validations:
+      required: true
+
+  - type: input
+    id: route
+    attributes:
+      label: Route hoặc file liên quan
+      placeholder: "/orders hoặc src/components/data-table/DataTable.tsx"
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Môi trường
+      description: Trình duyệt, viewport (375/768/1280), light/dark, OS nếu liên quan.
+      placeholder: "Chrome 140 · 375px · dark"
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Bằng chứng
+      description: Console error, screenshot, output lệnh. Không dán secret.
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Đã kiểm
+      options:
+        - label: Đã chạy `pnpm typecheck`, `pnpm lint`, `pnpm build`
+        - label: Đã thử ở viewport nhỏ (375px) và cả light/dark

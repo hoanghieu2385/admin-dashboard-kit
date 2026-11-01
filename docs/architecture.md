@@ -28,7 +28,7 @@ Luật bất biến:
 admin-dashboard-kit/
 ├── README.md AGENTS.md CLAUDE.md PROJECT_BRIEF.md HANDOFF.md UI_GUIDELINES.md
 ├── CONTRIBUTING.md LICENSE
-├── .github/PULL_REQUEST_TEMPLATE.md
+├── .github/                 PULL_REQUEST_TEMPLATE.md · ISSUE_TEMPLATE/
 ├── .agents/skills/          admin-ui-development/ admin-ui-component/ admin-ui-review/
 ├── .claude/skills/          symlink tới .agents/skills/* (Claude Code)
 ├── docs/                    architecture.md components.md page-templates.md tooling.md validation.md
@@ -80,7 +80,7 @@ Phân trang/sắp xếp chạy phía client (state nội bộ); khi có API th�
 - Route gốc có `HydrateFallback: AdminLoading` cho lần truy cập trực tiếp bằng URL.
   Điều hướng client-side giữ trang cũ tới khi chunk xong (không có Suspense boundary theo route).
 - 404 bằng route `*` + `errorElement` dùng `ErrorPage`, không để trắng trang.
-- Nav config tập trung ở `src/config/nav.ts` (`label`, `href`, `icon`, `group`); sidebar và breadcrumb cùng đọc file này.
+- Nav config tập trung ở `src/config/nav.ts` (`NavGroup[]`, mỗi item có `label`, `href`, `icon`); sidebar và breadcrumb cùng đọc file này.
 - Breadcrumb suy ra từ URL + nav config (`hooks/use-breadcrumbs.ts`); không khai báo riêng trong page.
 
 ## 5. Chiến lược phiên bản
@@ -118,7 +118,7 @@ Dependency dùng chung để ghép class là `cn` (drop-in cho clsx + tailwind-m
 | 3 | Core components (UI, admin, data, form, feedback) | ✅ |
 | 4 | Page templates + demo mock + lazy route | ✅ |
 | 5 | Demo orders/reports + docs component/template | ✅ |
-| 6 | GitHub Template readiness, AI context, skills, tooling, validation | ✅ |
+| 6 | GitHub Template readiness, AI context, skills, tooling, validation | ✅ repo · ⏳ thao tác GitHub của chủ repo |
 
 Chi tiết việc đã làm & việc kế tiếp: `HANDOFF.md`.
 

@@ -13,7 +13,7 @@ Dự án mới chỉ cần mô tả nghiệp vụ, tái sử dụng những gì 
 
 - Design tokens light/dark hoàn chỉnh, font Be Vietnam Pro, primary amber.
 - Admin shell: sidebar docked/collapsible/drawer mobile, header, breadcrumb, page header.
-- 23 shadcn/ui primitives + 20 admin components dùng chung.
+- 23 shadcn/ui primitives + 23 admin components dùng chung.
 - 5 page template: Dashboard, List, Form (create + edit), Detail, Settings.
 - Demo chạy được: khách hàng, sản phẩm, đơn hàng, báo cáo, cài đặt, showcase component.
 - Tài liệu cho người và AI: `AGENTS.md`, `CLAUDE.md`, `UI_GUIDELINES.md`, `docs/`, 3 Agent Skills.
