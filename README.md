@@ -193,6 +193,7 @@ Checklist chi tiết: [`CONTRIBUTING.md`](CONTRIBUTING.md).
 | [`docs/page-templates.md`](docs/page-templates.md) | API + cách ghép template |
 | [`docs/tooling.md`](docs/tooling.md) | Agent Skills & công cụ AI |
 | [`docs/validation.md`](docs/validation.md) | biên bản validation dự án mới |
+| [`CHANGELOG.md`](CHANGELOG.md) | lịch sử phát hành |
 
 ## Giới hạn
 
