@@ -82,7 +82,7 @@ Page quyết định cột, schema, nhãn, tone trạng thái và format. Templa
 
 - Mock đặt trong `src/mocks/<domain>.mock.ts`, dữ liệu hư cấu, **không** thông tin cá nhân thật, không secret.
 - Mock không được import vào `components/**` hay `templates/**`.
-- Type dùng chung → `src/types/`; type chỉ dùng 1 file → khai báo tại file đó.
+- Type dùng chung → `src/types/`; type chỉ dùng 1 file → khai báo tại file đó. Type của mock export tại file mock.
 - Route khai báo tập trung ở `src/app/routes.tsx`, dùng helper `lazyPage()`; 404 giữ `ErrorPage`.
 - Nav khai báo ở `src/config/nav.ts` — sidebar và breadcrumb cùng đọc file này. Thêm trang phải thêm nav (nếu người dùng cần thấy) và route.
 - Dữ liệu vào template phải đã lọc/sắp xếp/format ở page. Phân trang/sắp xếp hiện chạy client.

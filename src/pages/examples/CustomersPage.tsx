@@ -11,7 +11,7 @@ import { SearchInput } from "@/components/filters/SearchInput"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { formatDate } from "@/lib/format"
-import { CUSTOMER_STATUS_META, customers, type Customer } from "@/mocks/customers"
+import { CUSTOMER_STATUS_META, customers, type Customer } from "@/mocks/customers.mock"
 import { ListTemplate } from "@/templates/list/ListTemplate"
 
 type StatusFilter = "all" | Customer["status"]

@@ -1,5 +1,5 @@
-import { customers } from "@/mocks/customers"
-import { products } from "@/mocks/products"
+import { customers } from "@/mocks/customers.mock"
+import { products } from "@/mocks/products.mock"
 import type { Order, OrderItem, OrderStatus, PaymentMethod, PaymentStatus } from "@/types/order"
 
 export const ORDER_STATUS_META = {

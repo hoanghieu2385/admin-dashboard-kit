@@ -29,7 +29,7 @@ Xây page quản trị bằng những gì repo đã có. Không thiết kế l�
 
 ## 3. Luồng triển khai
 
-1. **Type**: dùng chung → `src/types/<domain>.ts`; chỉ một file → khai báo tại page.
+1. **Type**: dùng chung → `src/types/<domain>.ts`; chỉ một file → khai báo tại page (trừ type của mock — export tại file mock).
 2. **Mock**: `src/mocks/<domain>.mock.ts`; dữ liệu hư cấu; export type + mảng + metadata trạng thái nếu cần.
 3. **Page**: `src/pages/<domain>/` — state lọc/sort/format ở page.
 4. **Nav**: `src/config/nav.ts` nếu mục cần hiện trong sidebar/breadcrumb.
@@ -56,7 +56,7 @@ const columns = useMemo<ColumnDef<Supplier, unknown>[]>(
   data={filtered}
   getRowId={(row) => row.id}
   onRowClick={(row) => navigate(`/suppliers/${row.id}`)}
-  filters={<><SearchInput value={search} onValueChange={setSearch} /><FilterBar ... /></>}
+  filters={<SearchInput value={search} onValueChange={setSearch} />}
   onResetFilters={hasFilters ? reset : undefined}
   emptyState={<EmptyState title="Không có nhà cung cấp" action={<Button onClick={reset}>Xoá bộ lọc</Button>} />}
 />

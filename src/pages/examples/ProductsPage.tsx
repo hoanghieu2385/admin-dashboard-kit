@@ -7,7 +7,7 @@ import { SearchInput } from "@/components/filters/SearchInput"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { formatCurrency, formatDate } from "@/lib/format"
-import { PRODUCT_STATUS_META, products, type Product } from "@/mocks/products"
+import { PRODUCT_STATUS_META, products, type Product } from "@/mocks/products.mock"
 import { ListTemplate } from "@/templates/list/ListTemplate"
 
 type StatusFilter = "all" | Product["status"]

@@ -17,7 +17,10 @@ Cập nhật lần cuối: 2026-11-01 · Phase hiện tại: **7 xong phần rep
 - `LICENSE` MIT điền chủ sở hữu `Hieu Hoang`; README/CONTRIBUTING không còn nhắc placeholder.
 - Review `cf6313b`: Issue Forms hợp lệ (YAML parse OK, label tồn tại), docs khớp source (23 admin component, `NavGroup[]`), không secret/file tạm/thay đổi ngoài phạm vi.
 - Quality gate sau sửa: install/typecheck/lint/build pass, `git diff --check` sạch.
-- Chưa push, chưa bật Template repository, chưa tag `v0.1.0`.
+- Đã push 6 commit lên `origin/main` (fast-forward) và bật **Template repository** (`isTemplate: true`).
+- Validation 7.5: tạo repo private từ template (`gh repo create --template`), AI fresh context chỉ nhận yêu cầu nghiệp vụ Warehouses → dùng đúng `ListTemplate`/`FormTemplate`/`DetailTemplate`, **0 component dùng chung mới, 0 dependency mới**; gate pass. Kiểm tự động 1280/768/375 × light/dark: `pageOverflow: false`, 0 console error.
+- Sửa theo phát hiện của validation: bỏ `FilterBar` lồng trong ví dụ skill; đổi 3 mock cũ sang `*.mock.ts`; ghi rõ type của mock export tại file mock.
+- Còn: xoá repo tạm `adk-template-check` (token `gh` thiếu scope `delete_repo`), chuyển public, tag `v0.1.0`.
 
 ### Phase 6 — GitHub template readiness
 
@@ -113,13 +116,14 @@ Build warning từ `zod` (`@__PURE__`) phát ra từ dependency, không phải c
 
 **Người dùng (bắt buộc trước khi publish):**
 
-1. Push 6 commit lên `origin/main` (chờ xác nhận rõ ràng).
-2. Bật **Settings → General → Template repository** (thao tác trên GitHub, không có file cấu hình).
-3. Chuyển repo sang **public** nếu muốn người ngoài dùng template (hiện private).
+1. Push commit sửa docs/mock lên `origin/main` (chờ xác nhận rõ ràng).
+2. Xoá repo tạm `hoanghieu2385/adk-template-check`: `gh auth refresh -s delete_repo` rồi `gh repo delete adk-template-check --yes`, hoặc xoá trên GitHub UI.
+3. Bật **Settings → General → Template repository** (đã bật; bật lại nếu repo mới).
+4. Chuyển repo sang **public** nếu muốn người ngoài dùng template (hiện private; template private chỉ người có quyền truy cập dùng được).
 
 **Tùy chọn:**
 
-4. Tag `v0.1.0` + GitHub Release sau khi push.
-5. Thêm GitHub Actions chạy `typecheck/lint/build` nếu muốn chặn PR lỗi.
-6. Chạy axe/Lighthouse định kỳ; thêm script kiểm 3 breakpoint nếu review tay quá chậm.
-7. `pnpm create:page` — chưa làm vì chưa có nhu cầu lặp lại đủ lớn.
+5. Tag `v0.1.0` + GitHub Release sau khi push.
+6. Thêm GitHub Actions chạy `typecheck/lint/build` nếu muốn chặn PR lỗi.
+7. Chạy axe/Lighthouse định kỳ; thêm script kiểm 3 breakpoint nếu review tay quá chậm.
+8. `pnpm create:page` — chưa làm vì chưa có nhu cầu lặp lại đủ lớn.

@@ -52,7 +52,7 @@ admin-dashboard-kit/
 │   ├── lib/                 utils · format · theme · order-utils · report-utils
 │   ├── config/              nav.ts · site.ts
 │   ├── types/               common.ts · order.ts · report.ts
-│   ├── mocks/               customers · products · orders.mock · reports.mock · dashboard
+│   ├── mocks/               customers.mock · products.mock · orders.mock · reports.mock · dashboard.mock
 │   └── styles/              globals.css
 ├── components.json  package.json  pnpm-lock.yaml  tsconfig.json  vite.config.ts  eslint.config.js
 ```

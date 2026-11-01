@@ -4,9 +4,9 @@ import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YA
 import { SectionCard } from "@/components/common/SectionCard"
 import { DashboardTemplate } from "@/templates/dashboard/DashboardTemplate"
 import { formatCurrency, formatRelativeTime } from "@/lib/format"
-import { customers } from "@/mocks/customers"
-import { activities, revenueSeries } from "@/mocks/dashboard"
-import { products } from "@/mocks/products"
+import { customers } from "@/mocks/customers.mock"
+import { activities, revenueSeries } from "@/mocks/dashboard.mock"
+import { products } from "@/mocks/products.mock"
 
 const activeCustomers = customers.filter((customer) => customer.status === "active").length
 const lowStockProducts = products
