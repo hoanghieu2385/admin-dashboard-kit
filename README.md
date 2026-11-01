@@ -9,6 +9,9 @@ Dự án mới chỉ cần mô tả nghiệp vụ, tái sử dụng những gì 
 
 > Đây là **source-first kit**: copy repo hoặc dùng GitHub *Use this template*. Không publish npm.
 
+Demo và mock mặc định nghiêng nghiệp vụ **bán hàng**: khách hàng, sản phẩm, đơn hàng, báo cáo, cài đặt.
+Phần kit (token, component, template) vẫn trung lập — đổi domain bằng cách thay mock/page, giữ nguyên template.
+
 ## Tính năng
 
 - Design tokens light/dark hoàn chỉnh, font Be Vietnam Pro, primary amber.

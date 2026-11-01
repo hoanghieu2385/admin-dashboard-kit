@@ -15,6 +15,9 @@ Một **Admin Dashboard UI Kit** độc lập, tái sử dụng cho nhiều dự
 
 Khi mở dự án mới: mô tả nghiệp vụ → chọn template → tái sử dụng component → chỉ viết phần đặc thù.
 
+Kit trung lập nghiệp vụ; demo mặc định nghiêng **bán hàng/sản phẩm** (khách hàng, sản phẩm, đơn hàng, báo cáo)
+để minh họa cách ghép template, không ràng buộc domain của dự án mới.
+
 ## 2. Phạm vi
 
 Trong phạm vi:
