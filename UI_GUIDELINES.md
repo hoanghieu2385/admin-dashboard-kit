@@ -85,6 +85,10 @@ Tone trạng thái dùng qua prop, không hardcode màu: `StatCard tone`, `Statu
 | Phân trang | `Pagination` (DataTable tự render) |
 | Trạng thái rỗng | `EmptyState` (title + description + action) |
 | Đang tải | `LoadingState` (skeleton giữ nhịp layout, `role="status"`) |
+| Lỗi tải dữ liệu | `ErrorState` (thông điệp + `onRetry`/`action`) |
+| Cặp nhãn/giá trị | `DescriptionList` (trang chi tiết) |
+| Card section | `SectionCard` (chart, khối thông tin, section tùy biến) |
+| Trang mới | Chọn template trong `docs/page-templates.md`, không dựng lại PageHeader/table/form |
 | Xác nhận xoá | `ConfirmDialog` (tone `danger`) |
 | Thông báo | `toast()` qua Sonner |
 | Filter | `FilterBar` + `SearchInput` + `Select` + `DateFilter` |
@@ -123,6 +127,8 @@ Breakpoints Tailwind mặc định: `sm 640` · `md 768` · `lg 1024` · `xl 128
 | `h-screen` + body scroll | sidebar trôi, mobile giật |
 | Tự viết lại Button/Select/Dialog | trùng shadcn/ui |
 | DataTable gắn cứng cột "customer" | mất tính tái sử dụng |
+| Template import mock hoặc giữ state nghiệp vụ | template phải nhận props/children từ page |
+| Tạo template Create/Edit riêng | `FormTemplate` đã xử lý cả hai qua `mode` |
 | Mock data import trong `components/` | component phải nhận props |
 | `any`, `@ts-ignore` để qua build | che lỗi thật |
 | Nhiều primary/CTA cùng màn hình | mất điểm nhấn |

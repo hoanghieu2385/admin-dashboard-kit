@@ -31,7 +31,7 @@ export function StatCard({ title, value, description, icon: Icon, tone = "primar
     <>
       <div className="flex min-w-0 flex-col gap-1">
         <span className="text-[15px] font-medium text-muted-foreground">{title}</span>
-        <span className="text-3xl font-bold tracking-tight tabular-nums">{value}</span>
+        <span className="text-3xl leading-tight font-bold tracking-tight break-words tabular-nums">{value}</span>
         {description ? <span className="text-sm text-muted-foreground">{description}</span> : null}
       </div>
       {Icon ? (

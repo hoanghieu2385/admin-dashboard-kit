@@ -43,13 +43,13 @@ admin-dashboard-kit/
 │   │   ├── feedback/    ConfirmDialog, Alert, Toaster, SuccessState
 │   │   └── common/      PageContainer, SectionCard, IconAction
 │   ├── layouts/        AdminLayout.tsx
-│   ├── templates/      dashboard/ list/ create/ edit/ detail/ settings/
-│   ├── pages/          examples/ (customers, products, settings…)
-│   ├── hooks/          use-stored-value, use-theme, use-media-query, use-debounce
-│   ├── lib/            utils(cn), format, pagination, constants
+│   ├── templates/      dashboard/ list/ form/ detail/ settings/
+│   ├── pages/          examples/ (dashboard, customers, customer form/detail, products, settings)
+│   ├── hooks/          use-stored-value, use-breadcrumbs
+│   ├── lib/            utils(cn), format, theme
 │   ├── config/         nav.ts, site.ts
-│   ├── types/          common.ts (Id, SortDir, PageState…)
-│   ├── mocks/          customers.ts, products.ts, stats.ts
+│   ├── types/          common.ts (AdminUser…)
+│   ├── mocks/          customers.ts, products.ts, orders.ts, dashboard.ts
 │   └── styles/         globals.css (tokens + theme)
 ├── components.json  package.json  pnpm-lock.yaml  tsconfig.json  vite.config.ts  eslint.config.js
 ```
@@ -72,8 +72,9 @@ Thư mục chỉ được tạo khi có file thật. Không tạo placeholder r�
 
 - `createBrowserRouter` + `RouterProvider`, route tree khai báo trong `src/app/routes.tsx`.
 - `AdminLayout` là layout route; page con render qua `<Outlet />`.
-- Route module lazy bằng `lazy()` để giữ bundle gọn; mỗi page export `default`.
-- 404 bằng `errorElement`/`*` route dùng `ErrorState`, không để trắng trang.
+- Route module lazy bằng `lazy()` để giữ bundle gọn; mỗi page export `default`, helper `lazyPage()` trong `routes.tsx` map default export thành `Component`.
+- Route gốc có `HydrateFallback: AdminLoading` (shell + `LoadingState`) cho lần truy cập trực tiếp bằng URL. Điều hướng phía client giữ trang cũ tới khi chunk xong.
+- 404 bằng `errorElement`/`*` route dùng `ErrorPage`, không để trắng trang.
 - Nav config tập trung ở `src/config/nav.ts` (`label`, `href`, `icon`, `group`), sidebar và breadcrumb cùng đọc file này.
 
 ## 5. Chiến lược phiên bản
@@ -126,7 +127,7 @@ Nâng major phải kèm: lý do, kiểm tra build + type + lint, ghi lại trong
 
 ### Phase 4 — Page templates
 
-Dashboard (stats + chart + list gần đây), List (toolbar + table + pagination + 3 state), Create/Edit (FormSection + actions + validation), Detail (descriptions + related), Settings (tabs + form).
+Dashboard (stats + chart + hoạt động + section tùy biến), List (filters + table + pagination + loading/empty/error), Form (create/edit + validation + submit state), Detail (metadata + related + section), Settings (nav + section + save/reset). Mock theo domain + demo page + route lazy. Chi tiết API: `docs/page-templates.md`.
 
 ### Phase 5 — Demo & docs
 
@@ -147,9 +148,14 @@ Demo nghiệp vụ "quản lý khách hàng" + "sản phẩm" bằng mock data; 
 | D5 | Copy-in (source-first), không publish npm | người dùng sở hữu code |
 | D6 | Copy UI tiếng Việt trong demo | đổi qua `config/site.ts` nếu cần |
 | D7 | Theme context đặt ở `src/lib/theme.tsx` (không ở `app/providers/`) | để `components/**` dùng `useTheme` mà không phụ thuộc tầng `app/`; `app/providers` chỉ wire provider |
-| D8 | Route chưa lazy | Phase 2 chỉ có trang tạm; chuyển sang `lazy()` ở Phase 4 khi có page thật |
+| D8 | Route lazy từ Phase 4 | `lazy()` + helper `lazyPage`; route gốc có `HydrateFallback` để direct URL vẫn thấy shell + loading |
 | D9 | Key localStorage: `adk-theme`, `adk-sidebar-collapsed` | `adk-theme` đọc cả trong script chống nháy theme ở `index.html` |
 | D10 | `FormField` dùng primitive `field` của shadcn 4.x, không có `form` component | registry 4.x bỏ `form`; `FormField` là render-prop nên bind được Input/Select/Textarea/Switch |
 | D11 | Thêm token ngữ nghĩa `--success` `--warning` `--info` | tránh hardcode `text-green-600` trong `StatusBadge`/`StatCard`; dark dùng oklch sáng hơn |
 | D12 | Trang showcase đặt ở `/components` (nav "UI Kit") | minh hoạ component ngay trong repo, không cần dựng page template trước Phase 4 |
 | D13 | `SearchInput` đặt ở `components/filters/` | tránh nhét hành vi debounce/lọc vào `components/forms/` (form = submit + validation) |
+| D14 | 5 template, `FormTemplate` kiêm create + edit | tránh 2 template trùng 95% code; `mode` chỉ đổi nhãn submit |
+| D15 | Template không giữ form state | `FormTemplate` nhận `UseFormReturn`; `SettingsTemplate` nhận section + callback, page bọc `<form>`/`FormProvider` |
+| D16 | `SettingsTemplate` mount mọi section, ẩn bằng `hidden` | field ở tab không active vẫn giữ value và được validate khi submit toàn form |
+| D17 | `SectionCard`, `DescriptionList`, `ErrorState` là building block dùng chung | tránh lặp card/description/error markup trong từng template và page |
+| D18 | Mock tách theo domain (`customers`, `products`, `orders`, `dashboard`) | page tự lọc/format; template không import `mocks/` |

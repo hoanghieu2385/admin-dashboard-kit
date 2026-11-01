@@ -12,7 +12,7 @@ export function ComingSoonPage({ title, description }: ComingSoonPageProps) {
       <PageHeader title={title} description={description} />
       <div className="rounded-xl border border-dashed border-border bg-card px-6 py-14 text-center">
         <p className="text-[15px] text-muted-foreground">
-          Trang này dùng template tổng quát, sẽ được hoàn thiện ở Phase 4 (Page Templates).
+          Trang này dùng template tổng quát, sẽ được hoàn thiện ở Phase 5 (Demo &amp; docs).
         </p>
       </div>
     </div>

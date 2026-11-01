@@ -5,12 +5,13 @@ Demo chạy được: `/components` (`src/pages/ComponentsPage.tsx`).
 
 | Nhóm | Component |
 | --- | --- |
-| Data display | `StatCard`, `StatusBadge`, `EmptyState`, `LoadingState` |
+| Data display | `StatCard`, `StatusBadge`, `EmptyState`, `LoadingState`, `ErrorState`, `DescriptionList` |
 | Data table | `DataTable`, `Pagination`, `SortableHeader` |
 | Filters | `SearchInput`, `FilterBar`, `DateFilter` |
 | Forms | `FormField`, `FormSection`, `FormActions` |
 | Feedback | `ConfirmDialog` |
-| Navigation | `Breadcrumbs`, `useBreadcrumbs` |
+| Common | `SectionCard` |
+| Layout / navigation | `PageHeader`, `Breadcrumbs`, `useBreadcrumbs` |
 
 ## 1. Data display
 
@@ -71,6 +72,35 @@ const STATUS = { active: { label: "Đang hoạt động", tone: "success" }, blo
 | `className` | `string` | — |
 
 `role="status"` + `sr-only` label. Dùng cho khối nội dung; `DataTable` đã tự hiện khi `isLoading`.
+
+### ErrorState — `@/components/data-display/ErrorState`
+
+| Prop | Kiểu | Mặc định |
+| --- | --- | --- |
+| `title` | `string` | `"Không tải được dữ liệu"` |
+| `description` | `string` | — |
+| `onRetry` | `() => void` | — |
+| `retryLabel` | `string` | `"Thử lại"` |
+| `action` | `ReactNode` | — |
+| `className` | `string` | — |
+
+`role="alert"`, tone destructive. Dùng khi tải dữ liệu thất bại; `action` cho trường hợp không có nút thử lại (ví dụ link quay về danh sách).
+
+```tsx
+<ErrorState description="Kết nối bị gián đoạn." onRetry={refetch} />
+```
+
+### DescriptionList — `@/components/data-display/DescriptionList`
+
+| Prop | Kiểu | Mặc định |
+| --- | --- | --- |
+| `items` | `{ label: string; value: ReactNode }[]` | — |
+| `columns` | `1 \| 2` | `2` (2 cột từ `sm`) |
+| `className` | `string` | — |
+
+```tsx
+<DescriptionList items={[{ label: "Email", value: customer.email }, { label: "Ngày tạo", value: "28/10/2026" }]} />
+```
 
 ## 2. Data table
 
@@ -250,7 +280,37 @@ Dialog đóng ngay khi xác nhận (Radix `AlertDialogAction`); nếu hành đ�
 />
 ```
 
-## 6. Navigation
+## 6. Common
+
+### SectionCard — `@/components/common/SectionCard`
+
+| Prop | Kiểu | Mặc định |
+| --- | --- | --- |
+| `title` | `string` | — |
+| `description` | `string` | — |
+| `actions` | `ReactNode` | — |
+| `children` | `ReactNode` | — |
+| `className` | `string` | — |
+
+Card nội dung có header tùy chọn (title + description + actions). Dùng cho chart, khối thông tin, section tùy biến trong template. Không có header thì chỉ render card + padding.
+
+```tsx
+<SectionCard title="Doanh thu" description="8 tháng gần nhất" actions={<Button size="sm">Xuất</Button>}>
+  {chart}
+</SectionCard>
+```
+
+## 7. Layout & navigation
+
+### PageHeader — `@/components/layout/PageHeader`
+
+| Prop | Kiểu |
+| --- | --- |
+| `title` | `string` |
+| `description` | `string` |
+| `children` | `ReactNode` (actions bên phải) |
+
+Nơi duy nhất render `<h1>` của trang. Actions tự full-width trên mobile.
 
 ### Breadcrumbs — `@/components/navigation/Breadcrumbs`
 

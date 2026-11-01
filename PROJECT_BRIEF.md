@@ -21,7 +21,7 @@ Trong phạm vi:
 - Admin layout: sidebar (docked + collapsible + drawer mobile), header, breadcrumb, page header.
 - UI components (shadcn/ui) + admin components dùng chung (DataTable, filters, stats, status, states).
 - Form building blocks (RHF + Zod).
-- 6 page templates: Dashboard, List, Create, Edit, Detail, Settings.
+- 5 page templates: Dashboard, List, Form (create/edit), Detail, Settings.
 - Demo app dùng mock data + local state.
 - Tài liệu + agent skills.
 
@@ -69,7 +69,7 @@ src/
   app/          # App root, router, providers
   components/   # ui/ layout/ navigation/ data-display/ data-table/ forms/ feedback/ common/
   layouts/      # AdminLayout
-  templates/    # dashboard/ list/ create/ edit/ detail/ settings/
+  templates/    # dashboard/ list/ form/ detail/ settings/
   pages/        # examples/ (demo gắn mock data)
   hooks/ lib/ config/ types/ mocks/ styles/
 ```
@@ -99,9 +99,9 @@ Chi tiết: `docs/architecture.md`.
 | --- | --- | --- |
 | 1 | Audit, planning, tài liệu nền tảng | ✅ xong |
 | 2 | Foundation: Vite/TS/Tailwind/shadcn/router/theme/AdminLayout/navigation | ✅ xong |
-| 3 | Core components (UI, admin, data, form, feedback) | ⏳ tiếp theo |
-| 4 | Page templates (6 loại) | ⏳ |
-| 5 | Demo hoàn chỉnh + docs component/template + agent skills + README | ⏳ |
+| 3 | Core components (UI, admin, data, form, feedback) | ✅ xong |
+| 4 | Page templates (5 loại) + demo mock + lazy route | ✅ xong |
+| 5 | Demo hoàn chỉnh + docs component/template + agent skills + README | ⏳ tiếp theo |
 | 6 | GitHub Template readiness | ⏳ |
 
 Roadmap chi tiết từng bước: `docs/architecture.md` §7.

@@ -91,7 +91,7 @@ export function ComponentsPage() {
     setRange({})
   }
 
-  const columns: ColumnDef<DemoRow, unknown>[] = [
+  const columns = useMemo<ColumnDef<DemoRow, unknown>[]>(() => [
     {
       accessorKey: "name",
       header: ({ column }) => <SortableHeader column={column} label="Khách hàng" />,
@@ -132,12 +132,12 @@ export function ComponentsPage() {
         </Button>
       ),
     },
-  ]
+  ], [])
 
   return (
     <div className="flex flex-col gap-8">
       <PageHeader
-        title="UI Kit — Phase 3"
+        title="UI Kit"
         description="Showcase component dùng chung: dữ liệu và callback đều truyền từ trang này vào."
       >
         <Button className="h-11">
@@ -290,3 +290,5 @@ function DemoForm() {
     </FormProvider>
   )
 }
+
+export default ComponentsPage

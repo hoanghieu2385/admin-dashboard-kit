@@ -19,6 +19,7 @@ export default defineConfig({
           radix: ["radix-ui"],
           table: ["@tanstack/react-table"],
           forms: ["react-hook-form", "zod", "@hookform/resolvers"],
+          charts: ["recharts"],
         },
       },
     },

@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -34,9 +35,31 @@ export function ConfirmDialog({
   tone = "default",
   onConfirm,
 }: ConfirmDialogProps) {
+  // Dialog điều khiển bằng state, không có trigger nên Radix không tự trả focus về chỗ cũ.
+  const restoreRef = useRef<HTMLElement | null>(null)
+  useEffect(() => {
+    if (open) return
+    const track = (event: FocusEvent) => {
+      const target = event.target as HTMLElement | null
+      if (target?.closest('[role="alertdialog"]')) return
+      restoreRef.current = target
+    }
+    document.addEventListener("focusin", track)
+    return () => document.removeEventListener("focusin", track)
+  }, [open])
+
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
-      <AlertDialogContent>
+      <AlertDialogContent
+        onCloseAutoFocus={(event) => {
+          const target = restoreRef.current
+          restoreRef.current = null
+          if (target?.isConnected) {
+            event.preventDefault()
+            target.focus()
+          }
+        }}
+      >
         <AlertDialogHeader>
           <AlertDialogTitle>{title}</AlertDialogTitle>
           <AlertDialogDescription className={description ? undefined : "sr-only"}>

@@ -1,79 +1,93 @@
 # HANDOFF
 
-Cập nhật lần cuối: 2026-11-01 · Phase hiện tại: **3 xong → chờ xác nhận sang Phase 4**
+Cập nhật lần cuối: 2026-11-01 · Phase hiện tại: **4 xong → chờ xác nhận sang Phase 5**
 
 ## Trạng thái
 
-- Repo: `hoanghieu2385/admin-dashboard-kit` (private). Phase 1 + 2 đã commit (`1cd3497`, `716bae7`); **code Phase 3 chưa commit**.
-- Chạy: `pnpm install` → `pnpm dev` (http://localhost:5173). Trang showcase component: **`/components`** (nav "UI Kit").
+- Repo: `hoanghieu2385/admin-dashboard-kit` (private). Phase 1 + 2 đã commit (`1cd3497`, `716bae7`); **toàn bộ code Phase 3 + 4 chưa commit** (HEAD `4c0aca1`).
+- Chạy: `pnpm install` → `pnpm dev` (http://localhost:5173). Showcase component: **`/components`** (nav "UI Kit").
 - Quality gate: `pnpm typecheck` ✅ · `pnpm lint` ✅ (0 error, 0 warning) · `pnpm build` ✅.
 
-## Đã xong Phase 3 — Core components
+## Đã xong Phase 4 — Page templates + demo
 
-| File | Props / API (tóm tắt) |
+### 5 template (`src/templates/`)
+
+| Template | Props chính | Ghi chú |
+| --- | --- | --- |
+| `dashboard/DashboardTemplate.tsx` | `title, description?, actions?, stats?: StatCardProps[], charts?, recentActivity?, children?, isLoading?, className?` | Chart 2/3 + activity 1/3 khi có cả hai; stats tự wrap grid |
+| `list/ListTemplate.tsx` | `title, description?, actions?, columns, data, isLoading?, error?, onRetry?, filters?, onResetFilters?, emptyState?, pageSize?, initialSorting?, onRowClick?, getRowId?, caption?, className?` | Bọc `PageHeader + FilterBar + DataTable`; có sẵn empty/loading/error |
+| `form/FormTemplate.tsx` | `title, description?, mode?: "create"\|"edit", form: UseFormReturn, onSubmit, onCancel?, submitLabel?, cancelLabel?, isLoading?, children` | Create/Edit dùng chung; validation + field do trang quyết định |
+| `detail/DetailTemplate.tsx` | `title, description?, status?, actions?, metadata?: DescriptionItem[], metadataTitle?, related?, children?, isLoading?, error?, onRetry?, className?` | 2 cột metadata + nội dung; `related` cho section liên quan |
+| `settings/SettingsTemplate.tsx` | `title, description?, sections: {id,label,icon?,content}[], activeSectionId, onSectionChange, actions?, className?` | Mount tất cả section, ẩn bằng `hidden` → giữ giá trị RHF và validate khi submit |
+
+API đầy đủ + ví dụ ghép: `docs/page-templates.md`.
+
+### Demo + mock
+
+| Route | Page | Mock |
+| --- | --- | --- |
+| `/` | `pages/examples/DashboardPage.tsx` | `mocks/dashboard.ts`, `mocks/orders.ts` |
+| `/customers` | `CustomersPage.tsx` (lọc, sắp xếp, phân trang, xoá có confirm, empty state) | `mocks/customers.ts` |
+| `/customers/:id` | `CustomerDetailPage.tsx` | `mocks/customers.ts`, `mocks/orders.ts` |
+| `/customers/new`, `/customers/:id/edit` | `CustomerFormPage.tsx` (1 page, `mode`) | `mocks/customers.ts` |
+| `/products` | `ProductsPage.tsx` | `mocks/products.ts` |
+| `/settings` | `SettingsPage.tsx` (4 tab, lưu/reset) | — |
+| `/components` | `ComponentsPage.tsx` (showcase, giữ nguyên) | — |
+
+`/orders`, `/reports` vẫn là `ComingSoonPage` (Phase 5).
+
+### Routing / lazy
+
+- `src/app/routes.tsx`: helper `lazyPage()` cho dashboard, customers, customer detail/form, products, components, settings. `/orders`, `/reports` giữ element tĩnh; 404 giữ nguyên.
+- `HydrateFallback: AdminLoading` ở route gốc (`src/layouts/AdminLoading.tsx` = `AdminShell` + `LoadingState`), tránh màn trắng khi mở URL trực tiếp.
+- `vite.config.ts`: thêm chunk `charts` (recharts) vào `manualChunks`.
+
+### Bổ sung dùng chung
+
+| File | Dùng để |
 | --- | --- |
-| `src/components/data-display/StatCard.tsx` | `title, value, description?, icon?, tone?, href?, className?` |
-| `src/components/data-display/StatusBadge.tsx` | `children, tone?, dot?, className?` |
-| `src/components/data-display/EmptyState.tsx` | `title, description?, icon?, action?, className?` |
-| `src/components/data-display/LoadingState.tsx` | `rows?, label?, className?` (`role="status"`) |
-| `src/components/data-table/DataTable.tsx` | `columns, data, isLoading?, emptyState?, toolbar?, pageSize?, initialSorting?, onRowClick?, getRowId?, caption?, className?` |
-| `src/components/data-table/Pagination.tsx` | `pageIndex, pageCount, onPageChange, className?` |
-| `src/components/data-table/SortableHeader.tsx` | `column, label, className?` |
-| `src/components/filters/SearchInput.tsx` | `value, onValueChange, placeholder?, debounceMs?, label?, className?` |
-| `src/components/filters/FilterBar.tsx` | `children, onReset?, resetLabel?, className?` |
-| `src/components/filters/DateFilter.tsx` | `value {from?,to?}, onChange, fromLabel?, toLabel?, className?` |
-| `src/components/forms/FormField.tsx` | `name, label, description?, required?, className?, children({field,id,invalid})` — render prop |
-| `src/components/forms/FormSection.tsx` | `title, description?, columns?: 1\|2, children, className?` |
-| `src/components/forms/FormActions.tsx` | `submitLabel?, cancelLabel?, onCancel?, isSubmitting?, className?` |
-| `src/components/feedback/ConfirmDialog.tsx` | `open, onOpenChange, title, description?, confirmLabel?, cancelLabel?, tone?: "default"\|"danger", onConfirm` |
-| `src/components/navigation/Breadcrumbs.tsx` | `items: {label, href?}[], className?` |
-| `src/hooks/use-breadcrumbs.ts` | suy breadcrumb từ `config/nav.ts` + URL |
+| `src/components/common/SectionCard.tsx` | Card có title/description/action cho section |
+| `src/components/data-display/ErrorState.tsx` | Lỗi + `onRetry` (dùng trong list/detail template) |
+| `src/components/data-display/DescriptionList.tsx` | Cặp nhãn/giá trị cho detail & metadata |
+| `src/lib/format.ts` | `formatDate`, `formatCurrency`, `formatNumber` |
+| `src/components/data-display/StatCard.tsx` | value dài tự xuống dòng (`leading-tight break-words`) |
 
-Sửa bổ sung ngoài danh sách component:
+### Sửa nhỏ ngoài phạm vi
 
-| File | Thay đổi |
-| --- | --- |
-| `src/components/layout/AdminShell.tsx` | skip link "Bỏ qua tới nội dung" (tab stop đầu tiên), render `Breadcrumbs` đầu nội dung |
-| `src/components/layout/AdminSidebar.tsx` | nav collapsed dùng `Tooltip` (thay `title` native) + `aria-label` |
-| `src/styles/globals.css` | thêm token `--success` `--warning` `--info` (light hex, dark oklch) + map `@theme inline` |
-| `src/components/ui/field.tsx` | shadcn `field` (registry 4.x không còn `form`) |
-| `src/pages/ComponentsPage.tsx` | trang showcase: StatCard, StatusBadge, DataTable + filter, form RHF+Zod, ConfirmDialog, LoadingState |
-| `src/app/routes.tsx` `src/config/nav.ts` | route + nav item `/components` ("UI Kit", icon `Blocks`) |
-| `vite.config.ts` | `manualChunks`: react / radix / table / forms |
-| `eslint.config.js` | tắt `react-hooks/incompatible-library` riêng cho `DataTable.tsx` (TanStack Table trả hàm không memoize được) |
-| `docs/components.md` | **mới** — bảng props + snippet cho 16 component |
-| `docs/architecture.md` | D3 → `radix-nova`; thêm D10–D13; cập nhật cây thư mục + Phase 3 |
-| `UI_GUIDELINES.md` | token `success/warning/info`, bảng "Component usage", a11y skip link + row-click |
+- `CustomersPage`/`ProductsPage`/`ComponentsPage`: `columns` bọc `useMemo` — trước đó `flexRender` coi cell function mới là component mới nên **remount toàn bộ ô mỗi lần re-render** (mất focus, dialog mở là mất luôn nút trigger).
+- `ConfirmDialog`: dialog điều khiển bằng state, không có `DialogTrigger` nên Radix luôn trả focus về `body`. Thêm theo dõi `focusin` khi dialog đóng để trả focus về control đã mở (Esc/Huỷ).
+- `DashboardPage`: stat doanh thu rút còn `"143 tr"` để không tràn card.
 
-### Đã kiểm (Chrome headless, puppeteer-core)
+## Đã kiểm (Chrome headless, CDP)
 
-- 1280 / 768 / 375 px: không tràn trang, **card bảng không còn vượt viewport** (đã sửa bằng `min-w-0` ở gốc `DataTable`); ở 375 bảng cuộn ngang trong card, các section dưới (form, LoadingState) cuộn tới được.
-- Light + dark: token mới đọc rõ ở cả hai theme.
-- Sắp xếp cột: đổi thứ tự ✅. Tìm kiếm debounce: 12 → 1 dòng, xoá lọc → 5 dòng/trang ✅.
-- Phân trang: "Trang 2 / 3" ✅. Validate form: `["Tên tối thiểu 2 ký tự","Email không hợp lệ"]` ✅, submit hợp lệ → toast ✅.
-- ConfirmDialog: xoá → **1 toast** "Đã xoá…", dòng biến mất; Huỷ → giữ nguyên ✅.
-- Row click: click ô → toast chọn dòng; Enter trên dòng → toast; Enter trên nút xoá → mở dialog, **không** phát sinh toast chọn dòng ✅.
-- Bàn phím: Tab đầu tiên = skip link; tooltip nav collapsed hiện "Khách hàng" ✅.
-- Console: 0 error, 0 warning; không request 4xx ✅.
+- `pnpm typecheck` / `pnpm lint` / `pnpm build` sạch.
+- 1280 / 768 / 375 px: không tràn trang; bảng nhiều cột cuộn ngang trong card ở mobile (đúng guideline).
+- Light + dark: đọc rõ; chart dark dùng token xám trung tính (xem mục dưới).
+- URL trực tiếp `/`, `/customers`, `/customers/c-001`, `/customers/c-001/edit`, `/customers/new`, `/products`, `/settings`, `/components`; URL sai → `ErrorPage`; lazy chunk tải đúng, không 404.
+- Luồng: lọc rỗng → empty state → reset; xoá → dialog → xác nhận → toast + mất dòng; validate form → 4 lỗi; submit hợp lệ → về `/customers` + toast; settings đổi tab → lưu → toast; reset → giá trị mặc định.
+- Bàn phím: Tab đầu tiên = skip link; `Esc` đóng dialog; đóng dialog trả focus về nút xoá; settings nav có `aria-current` + `aria-controls`, panel active hiện đúng.
+- Console: 0 error; network: 0 request lỗi/4xx.
+- Lazy fallback: throttle thấy `AdminLoading` từ ~1,5 s, route load ~5 s.
+
+Bundle sau build (`dist` 1,7 MB): `charts` 361 kB (gzip 104) · `index` 306 (95) · `radix` 131 (42) · `forms` 122 (37) · `react` 99 (34) · `table` 51 (13) · CSS 98 (15). Không còn cảnh báo chunk > 500 kB.
 
 ## Dependencies
 
-Không thêm dependency nào ở Phase 3 (TanStack Table / RHF / Zod / Sonner / date-fns đã cài từ Phase 2). Chỉ thêm 1 file shadcn: `src/components/ui/field.tsx`.
-
-Bundle sau build: `index` 361 kB (gzip 113) · `radix` 128 (42) · `forms` 121 (38) · `react` 99 (34) · `table` 51 (14) · CSS 98 kB (gzip 16). Không còn cảnh báo chunk > 500 kB.
+Không thêm dependency nào ở Phase 3 lẫn Phase 4. Không thêm file shadcn mới ở Phase 4.
 
 ## Vấn đề chưa giải quyết
 
-1. **Chưa có `ErrorState`** — Phase 3 roadmap cũ có, nhưng demo chưa có luồng lỗi thật; để lại khi làm list template ở Phase 4 (sẽ dùng cùng empty/loading).
-2. **`DataTable` chỉ phân trang/sắp xếp client** — chưa có `manualPagination`/`manualSorting`; thêm khi có API thật (ghi ở `docs/architecture.md` §3).
-3. **Build in cảnh báo của zod**: `node_modules/.../zod/v4/core/regexes.js contains an annotation that Rollup cannot interpret` — phát ra từ dependency, không phải code repo; bỏ qua.
-4. **Form mobile**: nút submit nằm trên nút Huỷ (`flex-col-reverse`). Nếu muốn submit ở dưới cho dễ với ngón tay thì đổi 1 dòng trong `FormActions`.
-5. **Commit**: 2 commit Phase 1 + Phase 2 đã có; Phase 3 chưa commit, chờ xác nhận (gộp 1 commit hay tách theo nhóm component).
+1. **Điều hướng client-side giữ trang cũ** trong lúc tải chunk lazy (không có suspense boundary theo route). Chấp nhận được với demo; nếu cần, bọc `Suspense`/`useNavigation` để hiện loading mảnh.
+2. **Bảng khách hàng mobile > 5 cột** phải cuộn ngang trong card — guideline cho phép, nhưng nếu muốn gọn hơn thì ẩn bớt cột ở `< md`.
+3. **Chart dark** dùng token xám trung tính, chưa có bảng màu chart riêng cho dark mode.
+4. **Mutation demo reset khi rời trang** (state local, không persist) — đúng chủ trương không backend.
+5. **Build warning từ zod** (`regexes.js` annotation) phát ra từ dependency, không phải code repo; bỏ qua.
+6. **Commit**: Phase 3 + 4 chưa commit, chờ xác nhận (gộp 1 commit hay tách component/template/docs).
 
-## Việc kế tiếp (Phase 4 — Page templates, chờ xác nhận)
+## Việc kế tiếp (Phase 5 — gợi ý)
 
-1. `src/templates/`: `DashboardTemplate` (StatCard + chart Recharts + list gần đây), `ListTemplate` (PageHeader + FilterBar + DataTable + 3 state), `FormTemplate` (FormSection + FormActions + validation), `DetailTemplate` (descriptions + related), `SettingsTemplate` (Tabs + form).
-2. `src/pages/examples/` + `src/mocks/`: demo "quản lý khách hàng" và "sản phẩm" dùng mock data, thay dần `ComingSoonPage`.
-3. Chuyển route sang `lazy()` (D8) khi đã có page thật; page title theo route.
-4. Thêm `ErrorState` + luồng lỗi cho list template.
-5. Sau mỗi template: `pnpm typecheck && pnpm lint && pnpm build` + kiểm 3 breakpoint, light/dark.
+1. Trang `/orders`, `/reports` thật: dùng `ListTemplate` + `DashboardTemplate`, thêm mock `mocks/reports.ts` nếu cần.
+2. Rà lại `docs/page-templates.md` khi có template thứ 6 (nếu phát sinh) và bổ sung ví dụ "chọn template nào".
+3. Nếu muốn mượt hơn: route-level loading indicator khi chuyển trang (mục 1 ở trên).
+4. Kiểm a11y sâu: axe/Lighthouse, đặc biệt bảng cuộn ngang và tooltip sidebar.
+5. Chốt commit + tag milestone Phase 4.
