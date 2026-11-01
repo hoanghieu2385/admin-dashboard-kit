@@ -119,6 +119,7 @@ Dependency dùng chung để ghép class là `cn` (drop-in cho clsx + tailwind-m
 | 4 | Page templates + demo mock + lazy route | ✅ |
 | 5 | Demo orders/reports + docs component/template | ✅ |
 | 6 | GitHub Template readiness, AI context, skills, tooling, validation | ✅ repo · ⏳ thao tác GitHub của chủ repo |
+| 7 | Release readiness: LICENSE, review, push, template, v0.1.0 | ✅ repo · ⏳ push/tag/template |
 
 Chi tiết việc đã làm & việc kế tiếp: `HANDOFF.md`.
 

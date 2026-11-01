@@ -171,7 +171,7 @@ Công cụ tùy chọn (ponytail, impeccable, frontend-design, Context7, Headroo
 
 1. Trên GitHub: **Use this template → Create a new repository**. Không fork nếu muốn lịch sử sạch.
 2. Đổi định danh: `package.json` (`name`, `version`), `src/config/site.ts`, `index.html` (`<title>`), favicon.
-3. Điền chủ sở hữu vào `LICENSE` (đang là placeholder).
+3. Cập nhật chủ sở hữu bản quyền trong `LICENSE` theo dự án mới.
 4. Đổi tiền tố localStorage `adk-` nếu cần tránh trùng: `src/lib/theme.tsx`, `src/hooks/use-stored-value.ts`, script trong `index.html`.
 5. Xoá demo không cần: `src/pages/examples|orders|reports`, `src/mocks`, route/nav tương ứng. Giữ `templates/`, `components/`.
 6. Bật **Settings → General → Template repository** nếu repo mới tiếp tục làm template.
@@ -203,8 +203,8 @@ Checklist chi tiết: [`CONTRIBUTING.md`](CONTRIBUTING.md).
 - Chart dark dùng thang xám trung tính, chưa có palette chart riêng cho dark.
 - Chunk `charts` (Recharts) ~382 kB; chỉ tải ở route có chart.
 - Copy tiếng Việt trong demo; kit không có i18n.
-- `LICENSE` chưa có tên chủ sở hữu — phải điền trước khi phát hành.
+- Dự án dùng lại nên đổi chủ sở hữu trong `LICENSE` cho phù hợp.
 
 ## License
 
-MIT — xem [`LICENSE`](LICENSE). Thay `[COPYRIGHT HOLDER]` bằng tên/chủ sở hữu thật trước khi publish.
+MIT — xem [`LICENSE`](LICENSE).

@@ -1,21 +1,28 @@
 # HANDOFF
 
-Cập nhật lần cuối: 2026-11-01 · Phase hiện tại: **6 xong phần repo — còn 3 việc người dùng phải làm**
+Cập nhật lần cuối: 2026-11-01 · Phase hiện tại: **7 xong phần repo — chờ thao tác GitHub của chủ repo**
 
 ## 1. Trạng thái
 
-- Repo: `hoanghieu2385/admin-dashboard-kit` (private). HEAD `ed52fe0` (Phase 1–6 core đã commit, **4 commit chưa push**).
-- Working tree: bổ sung Issue Template + sửa chính xác tài liệu/comment — **chưa commit**.
+- Repo: `hoanghieu2385/admin-dashboard-kit` (private). HEAD là commit `docs: finalize GitHub template repository`; **6 commit chưa push** (đối chiếu `git log origin/main..HEAD`).
+- Working tree: sạch.
 - Chạy: `pnpm install --frozen-lockfile` → `pnpm dev` (http://localhost:5173).
 - Showcase component: `/components` (nav "UI Kit").
 - Không có backend/API/auth/RBAC. Demo dùng mock + local state.
 
-## 2. Phase 6 đã xong
+## 2. Phase 6–7 đã xong
 
-### GitHub template readiness
+### Phase 7 — release readiness
+
+- `LICENSE` MIT điền chủ sở hữu `Hieu Hoang`; README/CONTRIBUTING không còn nhắc placeholder.
+- Review `cf6313b`: Issue Forms hợp lệ (YAML parse OK, label tồn tại), docs khớp source (23 admin component, `NavGroup[]`), không secret/file tạm/thay đổi ngoài phạm vi.
+- Quality gate sau sửa: install/typecheck/lint/build pass, `git diff --check` sạch.
+- Chưa push, chưa bật Template repository, chưa tag `v0.1.0`.
+
+### Phase 6 — GitHub template readiness
 
 - `README.md`: tính năng, stack, inventory, cài đặt, tạo page, theme, AI coding, tạo repo từ template, limitations, license.
-- `LICENSE` MIT, chủ sở hữu vẫn là `[COPYRIGHT HOLDER]` — **bắt buộc điền trước publish**.
+- `LICENSE` MIT, chủ sở hữu `Hieu Hoang`.
 - `CONTRIBUTING.md`, `.github/PULL_REQUEST_TEMPLATE.md`.
 - `.github/ISSUE_TEMPLATE/`: `bug_report.yml`, `feature_request.yml` (GitHub Issue Forms).
 - `package.json`: bỏ `next-themes`, `shadcn` CLI ở devDependencies, thêm `license`/`engines`/`description`.
@@ -85,6 +92,7 @@ Tổng: 23 admin component (+1 hook) và 23 shadcn/ui primitive. API: `docs/comp
 | `pnpm typecheck` | pass, không output |
 | `pnpm lint` | pass, 0 error/warning |
 | `pnpm build` | pass (~5,5s); chunk lớn nhất `charts` 381,93 kB (gzip 111,19) |
+| Phase 7 re-check (cùng ngày) | install/typecheck/lint/build pass; `git diff --check` sạch |
 | Validation repo (cùng ngày) | install/typecheck/lint/build pass (~6,1s) |
 | Browser smoke validation repo | `/suppliers`, `/suppliers/new`, `/suppliers/NCC-1001`: render đúng, 0 console error, không tràn ngang ở 1000px |
 
@@ -97,22 +105,21 @@ Build warning từ `zod` (`@__PURE__`) phát ra từ dependency, không phải c
 3. Chart dark dùng thang xám trung tính, chưa có palette riêng cho dark.
 4. Mutation demo là local/in-memory: reload hoặc rời trang sẽ reset; list và detail không chia sẻ state (đúng chủ trương no-backend).
 5. `DateFilter` dùng `<input type="date">` native, format theo locale trình duyệt.
-6. `LICENSE` chưa có tên chủ sở hữu.
-7. Symlink skill cần Developer Mode trên Windows; nếu không, copy thủ công vào `.claude/skills/` (không commit bản copy).
-8. Chưa có test framework; chưa chạy axe/Lighthouse toàn site. UI validation là kiểm tay/headless Chrome, không phải CI tự động.
-9. Chưa có GitHub Actions CI; quality gate hiện chạy tay.
+6. Symlink skill cần Developer Mode trên Windows; nếu không, copy thủ công vào `.claude/skills/` (không commit bản copy).
+7. Chưa có test framework; chưa chạy axe/Lighthouse toàn site. UI validation là kiểm tay/headless Chrome, không phải CI tự động.
+8. Chưa có GitHub Actions CI; quality gate hiện chạy tay.
 
 ## 8. Việc kế tiếp
 
 **Người dùng (bắt buộc trước khi publish):**
 
-1. Điền tên chủ sở hữu vào `LICENSE`.
-2. Review + commit thay đổi Issue Template/docs, rồi push 5 commit lên GitHub.
-3. Bật **Settings → General → Template repository** (thao tác trên GitHub, không có file cấu hình).
+1. Push 6 commit lên `origin/main` (chờ xác nhận rõ ràng).
+2. Bật **Settings → General → Template repository** (thao tác trên GitHub, không có file cấu hình).
+3. Chuyển repo sang **public** nếu muốn người ngoài dùng template (hiện private).
 
 **Tùy chọn:**
 
-4. Tag `v0.1.0` sau khi push.
+4. Tag `v0.1.0` + GitHub Release sau khi push.
 5. Thêm GitHub Actions chạy `typecheck/lint/build` nếu muốn chặn PR lỗi.
 6. Chạy axe/Lighthouse định kỳ; thêm script kiểm 3 breakpoint nếu review tay quá chậm.
 7. `pnpm create:page` — chưa làm vì chưa có nhu cầu lặp lại đủ lớn.

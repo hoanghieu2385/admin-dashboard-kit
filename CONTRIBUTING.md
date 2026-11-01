@@ -52,7 +52,7 @@ Build warning từ dependency (ví dụ zod) không tính là lỗi repo; warnin
 
 Nếu repo này được dùng làm template:
 
-1. Điền chủ sở hữu vào `LICENSE` (đang là `[COPYRIGHT HOLDER]`).
+1. Cập nhật chủ sở hữu bản quyền trong `LICENSE` theo dự án mới.
 2. Đổi `package.json` name/version, `src/config/site.ts`, `index.html` title/favicon.
 3. Xoá demo không cần (`pages/examples|orders|reports`, `mocks`, route/nav) nhưng giữ template/component/docs.
 4. Kiểm `.agents/skills` và `.claude/skills` còn resolve đúng.
