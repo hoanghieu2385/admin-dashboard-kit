@@ -18,6 +18,10 @@ interface AdminSidebarProps {
 const itemClassName =
   "flex h-11 items-center gap-3 rounded-lg text-[15px] font-medium transition-colors outline-none focus-visible:ring-3 focus-visible:ring-ring/40"
 
+// Active đọc từ aria-current vì Radix Slot stringify className dạng hàm của NavLink.
+const activeItemClassName =
+  "aria-[current=page]:bg-sidebar-accent aria-[current=page]:font-semibold aria-[current=page]:text-sidebar-accent-foreground"
+
 interface SidebarPanelProps {
   collapsed: boolean
   variant: "docked" | "drawer"
@@ -50,7 +54,7 @@ function SidebarPanel({ collapsed, variant, onToggleCollapse, onNavigate }: Side
           {navGroups.map((group, groupIndex) => (
             <div key={group.label} className="flex flex-col gap-1">
               {collapsed ? (
-                groupIndex > 0 ? <div className="mx-auto mb-1 h-px w-8 bg-border" role="separator" /> : null
+                groupIndex > 0 ? <div className="mx-auto mb-1 h-px w-6 bg-border" role="separator" /> : null
               ) : (
                 <p className="px-3 pb-1 text-xs font-bold tracking-wider text-muted-foreground uppercase">
                   {group.label}
@@ -63,15 +67,12 @@ function SidebarPanel({ collapsed, variant, onToggleCollapse, onNavigate }: Side
                     end={item.href === "/"}
                     onClick={onNavigate}
                     aria-label={collapsed ? item.label : undefined}
-                    className={({ isActive }) =>
-                      cn(
-                        itemClassName,
-                        collapsed ? "mx-auto w-11 justify-center" : "px-3",
-                        isActive
-                          ? "bg-sidebar-accent font-semibold text-sidebar-accent-foreground"
-                          : "hover:bg-muted"
-                      )
-                    }
+                    className={cn(
+                      itemClassName,
+                      collapsed ? "mx-auto size-10 justify-center" : "px-3",
+                      activeItemClassName,
+                      "hover:not-aria-[current=page]:bg-muted"
+                    )}
                   >
                     {({ isActive }) => (
                       <>
@@ -104,14 +105,19 @@ function SidebarPanel({ collapsed, variant, onToggleCollapse, onNavigate }: Side
       </nav>
 
       {variant === "docked" ? (
-        <div className="shrink-0 border-t border-sidebar-border p-3">
+        <div
+          className={cn(
+            "shrink-0 border-t border-sidebar-border p-3",
+            collapsed && "flex justify-center"
+          )}
+        >
           <Button
             variant="ghost"
             onClick={onToggleCollapse}
             aria-label={collapsed ? "Mở rộng thanh bên" : "Thu gọn thanh bên"}
             className={cn(
               "h-11 gap-3 px-3 text-[15px] font-medium text-muted-foreground",
-              collapsed && "mx-auto w-11 justify-center px-0"
+              collapsed && "size-10 justify-center p-0"
             )}
           >
             {collapsed ? (

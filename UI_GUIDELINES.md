@@ -105,7 +105,7 @@ Breakpoints Tailwind mặc định: `sm 640` · `md 768` · `lg 1024` · `xl 128
 - **Mobile (< lg):** sidebar = drawer, page padding 16px, action của `PageHeader` full-width, bảng cuộn ngang (`overflow-x-auto`) — hoặc chuyển card list nếu cột > 5.
 - **Tablet (lg):** sidebar docked 16rem, grid 2 cột cho stats.
 - **Desktop (xl+):** grid 4 cột stats, table đầy đủ cột.
-- Tap target ≥ 44px (`h-11`) cho mọi hành động.
+- Tap target ≥ 44px (`h-11`) cho mọi hành động; ngoại lệ: ô nav sidebar collapsed 40×40 (yêu cầu polish, canh giữa trong 76px).
 - Không dùng `h-screen` (lỗi mobile browser), dùng `h-dvh`.
 
 ## 6. Accessibility (bắt buộc)

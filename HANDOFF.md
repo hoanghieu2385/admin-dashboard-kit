@@ -1,6 +1,6 @@
 # HANDOFF
 
-Cập nhật lần cuối: 2026-11-01 · Phase hiện tại: **4 xong → chờ xác nhận sang Phase 5**
+Cập nhật lần cuối: 2026-11-01 · Phase hiện tại: **4 xong → chờ xác nhận sang Phase 5** (có thêm polish sidebar collapsed)
 
 ## Trạng thái
 
@@ -57,6 +57,30 @@ API đầy đủ + ví dụ ghép: `docs/page-templates.md`.
 - `CustomersPage`/`ProductsPage`/`ComponentsPage`: `columns` bọc `useMemo` — trước đó `flexRender` coi cell function mới là component mới nên **remount toàn bộ ô mỗi lần re-render** (mất focus, dialog mở là mất luôn nút trigger).
 - `ConfirmDialog`: dialog điều khiển bằng state, không có `DialogTrigger` nên Radix luôn trả focus về `body`. Thêm theo dõi `focusin` khi dialog đóng để trả focus về control đã mở (Esc/Huỷ).
 - `DashboardPage`: stat doanh thu rút còn `"143 tr"` để không tràn card.
+
+## Sidebar polish — trạng thái collapsed (2026-11-01)
+
+Chỉ sửa `src/components/layout/AdminSidebar.tsx` (+ 1 dòng docs). Không đổi route, token, expanded layout, drawer mobile hay persistence.
+
+**Nguyên nhân gốc:** collapsed đặt `NavLink` làm `TooltipTrigger asChild`; Radix `Slot` gộp `className` nên hàm `({ isActive }) => cn(...)` bị stringify → link mất `h-11`, `w-11`, `mx-auto`, mất luôn nền active (cao thực tế 20px, lệch trái 4px). Đã chuyển trạng thái active sang class tĩnh đọc `aria-current="page"` (NavLink tự set) — className luôn là chuỗi, tooltip giữ nguyên.
+
+**Kết quả đo (Chrome CDP, 1280px):**
+
+| Hạng mục | Trước | Sau |
+| --- | --- | --- |
+| Rộng sidebar collapsed | 76px | 76px (giữ token `w-sidebar-collapsed`) |
+| Ô nav | 44×20px, tâm x=34 | 40×40px, tâm x=37.5 |
+| Tâm logo / separator | 37.5 / 37.5 | 37.5 / 37.5 |
+| Nút thu gọn | 44×44, tâm x=34 | 40×40, tâm x=37.5 |
+| Nền active | không có (class mất) | `bg-sidebar-accent` + icon primary, rõ ở cả light/dark |
+| Separator | 32px | 24px, canh giữa |
+
+- Ô nav 40×40 (theo yêu cầu) thay vì 44px của guideline; ghi chú ngoại lệ ở `UI_GUIDELINES.md` §5.
+- Tooltip: hiện khi hover **và** khi focus bàn phím (`aria-describedby` trỏ tới `role="tooltip"`), `aria-label` giữ nguyên khi collapsed.
+- Focus ring giữ `focus-visible:ring-3 ring-ring/40`; Tab đi qua đủ 7 nav + nút mở rộng.
+- Toggle 40×40 dùng `flex justify-center` ở khung dưới (`mx-auto` không ăn với `inline-flex`).
+- Persistence: thu gọn/mở rộng ghi `adk-sidebar-collapsed`, reload giữ đúng; drawer 768/375 mở bằng nút menu, `Esc` đóng, item vẫn 44px.
+- Không tràn ngang ở 375/768/1280; console 0 error.
 
 ## Đã kiểm (Chrome headless, CDP)
 
