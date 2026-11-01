@@ -10,4 +10,17 @@ export default defineConfig({
       "@": fileURLToPath(new URL("./src", import.meta.url)),
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        // Tách vendor theo nhóm để cache ổn định khi app code đổi.
+        manualChunks: {
+          react: ["react", "react-dom", "react-router"],
+          radix: ["radix-ui"],
+          table: ["@tanstack/react-table"],
+          forms: ["react-hook-form", "zod", "@hookform/resolvers"],
+        },
+      },
+    },
+  },
 })

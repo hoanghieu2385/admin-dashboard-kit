@@ -37,8 +37,9 @@ admin-dashboard-kit/
 │   │   ├── layout/     AdminShell, AdminSidebar, AdminHeader, PageHeader, MainContent
 │   │   ├── navigation/ Breadcrumbs, NavGroup, NavItem, CommandMenu
 │   │   ├── data-display/ StatCard, StatusBadge, EmptyState, LoadingState, ErrorState
-│   │   ├── data-table/  DataTable, TableToolbar, Pagination, SortableHeader, column helpers
-│   │   ├── forms/       FormField, FormSection, FormActions, wrappers RHF
+│   │   ├── data-table/  DataTable, Pagination, SortableHeader
+│   │   ├── filters/     SearchInput, FilterBar, DateFilter
+│   │   ├── forms/       FormField, FormSection, FormActions (RHF)
 │   │   ├── feedback/    ConfirmDialog, Alert, Toaster, SuccessState
 │   │   └── common/      PageContainer, SectionCard, IconAction
 │   ├── layouts/        AdminLayout.tsx
@@ -65,7 +66,7 @@ Thư mục chỉ được tạo khi có file thật. Không tạo placeholder r�
 | `templates/` | props, kiểu generic | API, mocks, router state |
 | `pages/` | mocks, router, templates | chi tiết style của `ui/` |
 
-`DataTable<TData>` là generic thuần: `columns`, `data`, `pageIndex`, `pageSize`, `sorting`, `onSortingChange`, `onPageChange`, `isLoading`, `emptyState`, `toolbar`. Không biết "customer" là gì.
+`DataTable<TData>` là generic thuần: `columns`, `data`, `pageSize`, `initialSorting`, `isLoading`, `emptyState`, `toolbar`, `onRowClick`, `getRowId`, `caption`. Không biết "customer" là gì. Phân trang và sắp xếp chạy phía client (state nội bộ); khi có API thật mới chuyển sang `manualPagination`/`manualSorting`.
 
 ## 4. Routing
 
@@ -114,12 +115,14 @@ Nâng major phải kèm: lý do, kiểm tra build + type + lint, ghi lại trong
 
 ### Phase 3 — Core components
 
-1. `common/`: PageContainer, SectionCard, IconAction.
-2. `data-display/`: StatCard, StatusBadge (map `tone` generic, không enum nghiệp vụ), EmptyState, LoadingState, ErrorState.
-3. `data-table/`: DataTable generic + Toolbar + Pagination + SortableHeader.
-4. `forms/`: FormField/FormSection/FormActions (RHF + Zod), SearchInput, FilterBar.
-5. `feedback/`: ConfirmDialog, Alert, SuccessState.
-6. `navigation/`: Breadcrumbs (từ nav config).
+1. `data-display/`: StatCard (tone generic), StatusBadge (nhận `tone`, không enum nghiệp vụ), EmptyState, LoadingState.
+2. `data-table/`: DataTable generic (TanStack Table 8) + Pagination + SortableHeader.
+3. `filters/`: SearchInput (debounce), FilterBar, DateFilter.
+4. `forms/`: FormField/FormSection/FormActions (RHF + Zod).
+5. `feedback/`: ConfirmDialog.
+6. `navigation/`: Breadcrumbs (từ nav config) + `hooks/use-breadcrumbs`.
+7. A11y: skip link trong `AdminShell`, tooltip cho nav khi sidebar collapsed.
+8. Trang showcase `/components` (nav "UI Kit") minh hoạ toàn bộ component.
 
 ### Phase 4 — Page templates
 
@@ -139,10 +142,14 @@ Demo nghiệp vụ "quản lý khách hàng" + "sản phẩm" bằng mock data; 
 | --- | --- | --- |
 | D1 | SPA Vite, không Next.js | kit độc lập, không phụ thuộc framework server |
 | D2 | Chỉ kế thừa *design* từ `baolochp`, không copy code | khác runtime (Base UI vs Radix, Next vs Vite) |
-| D3 | shadcn/ui Radix, style `new-york` | phổ biến nhất, tài liệu đầy đủ |
+| D3 | shadcn/ui Radix, style `radix-nova` | preset của `shadcn 4.x`; gần `new-york` nhưng dùng token mới (`data-slot`, `size-*`) |
 | D4 | Tailwind v4 CSS-first, không config JS | khớp `baolochp` |
 | D5 | Copy-in (source-first), không publish npm | người dùng sở hữu code |
 | D6 | Copy UI tiếng Việt trong demo | đổi qua `config/site.ts` nếu cần |
 | D7 | Theme context đặt ở `src/lib/theme.tsx` (không ở `app/providers/`) | để `components/**` dùng `useTheme` mà không phụ thuộc tầng `app/`; `app/providers` chỉ wire provider |
 | D8 | Route chưa lazy | Phase 2 chỉ có trang tạm; chuyển sang `lazy()` ở Phase 4 khi có page thật |
 | D9 | Key localStorage: `adk-theme`, `adk-sidebar-collapsed` | `adk-theme` đọc cả trong script chống nháy theme ở `index.html` |
+| D10 | `FormField` dùng primitive `field` của shadcn 4.x, không có `form` component | registry 4.x bỏ `form`; `FormField` là render-prop nên bind được Input/Select/Textarea/Switch |
+| D11 | Thêm token ngữ nghĩa `--success` `--warning` `--info` | tránh hardcode `text-green-600` trong `StatusBadge`/`StatCard`; dark dùng oklch sáng hơn |
+| D12 | Trang showcase đặt ở `/components` (nav "UI Kit") | minh hoạ component ngay trong repo, không cần dựng page template trước Phase 4 |
+| D13 | `SearchInput` đặt ở `components/filters/` | tránh nhét hành vi debounce/lọc vào `components/forms/` (form = submit + validation) |

@@ -1,7 +1,9 @@
+import { Fragment } from "react"
 import { ChevronsLeft, ChevronsRight, LayoutDashboard } from "lucide-react"
 import { NavLink } from "react-router"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { navGroups } from "@/config/nav"
 import { site } from "@/config/site"
 import { cn } from "@/lib/utils"
@@ -54,35 +56,48 @@ function SidebarPanel({ collapsed, variant, onToggleCollapse, onNavigate }: Side
                   {group.label}
                 </p>
               )}
-              {group.items.map((item) => (
-                <NavLink
-                  key={item.href}
-                  to={item.href}
-                  end={item.href === "/"}
-                  onClick={onNavigate}
-                  title={collapsed ? item.label : undefined}
-                  aria-label={collapsed ? item.label : undefined}
-                  className={({ isActive }) =>
-                    cn(
-                      itemClassName,
-                      collapsed ? "mx-auto w-11 justify-center" : "px-3",
-                      isActive
-                        ? "bg-sidebar-accent font-semibold text-sidebar-accent-foreground"
-                        : "hover:bg-muted"
-                    )
-                  }
-                >
-                  {({ isActive }) => (
-                    <>
-                      <item.icon
-                        className={cn("size-5 shrink-0", isActive ? "text-primary" : "text-muted-foreground")}
-                        aria-hidden="true"
-                      />
-                      {collapsed ? null : <span className="truncate">{item.label}</span>}
-                    </>
-                  )}
-                </NavLink>
-              ))}
+              {group.items.map((item) => {
+                const link = (
+                  <NavLink
+                    to={item.href}
+                    end={item.href === "/"}
+                    onClick={onNavigate}
+                    aria-label={collapsed ? item.label : undefined}
+                    className={({ isActive }) =>
+                      cn(
+                        itemClassName,
+                        collapsed ? "mx-auto w-11 justify-center" : "px-3",
+                        isActive
+                          ? "bg-sidebar-accent font-semibold text-sidebar-accent-foreground"
+                          : "hover:bg-muted"
+                      )
+                    }
+                  >
+                    {({ isActive }) => (
+                      <>
+                        <item.icon
+                          className={cn("size-5 shrink-0", isActive ? "text-primary" : "text-muted-foreground")}
+                          aria-hidden="true"
+                        />
+                        {collapsed ? null : <span className="truncate">{item.label}</span>}
+                      </>
+                    )}
+                  </NavLink>
+                )
+
+                if (!collapsed) {
+                  return <Fragment key={item.href}>{link}</Fragment>
+                }
+
+                return (
+                  <Tooltip key={item.href}>
+                    <TooltipTrigger asChild>{link}</TooltipTrigger>
+                    <TooltipContent side="right" sideOffset={8}>
+                      {item.label}
+                    </TooltipContent>
+                  </Tooltip>
+                )
+              })}
             </div>
           ))}
         </div>

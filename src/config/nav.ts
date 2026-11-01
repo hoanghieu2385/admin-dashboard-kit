@@ -1,4 +1,4 @@
-import { BarChart3, FileText, LayoutDashboard, Package, Settings, Users } from "lucide-react"
+import { BarChart3, Blocks, FileText, LayoutDashboard, Package, Settings, Users } from "lucide-react"
 import type { LucideIcon } from "lucide-react"
 
 export interface NavItem {
@@ -29,6 +29,7 @@ export const navGroups: NavGroup[] = [
   {
     label: "Hệ thống",
     items: [
+      { label: "UI Kit", href: "/components", icon: Blocks },
       { label: "Báo cáo", href: "/reports", icon: BarChart3 },
       { label: "Cài đặt", href: "/settings", icon: Settings },
     ],

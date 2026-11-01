@@ -1,100 +1,79 @@
 # HANDOFF
 
-Cập nhật lần cuối: 2026-11-01 · Phase hiện tại: **2 xong → chờ xác nhận sang Phase 3**
+Cập nhật lần cuối: 2026-11-01 · Phase hiện tại: **3 xong → chờ xác nhận sang Phase 4**
 
 ## Trạng thái
 
-- Repo: `hoanghieu2385/admin-dashboard-kit` (private). Code Phase 2 đã có, **chưa commit**.
-- Chạy được: `pnpm install` → `pnpm dev` (http://localhost:5173).
-- Đã kiểm: `pnpm typecheck` ✅ · `pnpm lint` ✅ (0 error, 0 warning) · `pnpm build` ✅ (JS 499 kB / gzip 162 kB, CSS 83 kB / gzip 13 kB).
+- Repo: `hoanghieu2385/admin-dashboard-kit` (private). Phase 1 + 2 đã commit (`1cd3497`, `716bae7`); **code Phase 3 chưa commit**.
+- Chạy: `pnpm install` → `pnpm dev` (http://localhost:5173). Trang showcase component: **`/components`** (nav "UI Kit").
+- Quality gate: `pnpm typecheck` ✅ · `pnpm lint` ✅ (0 error, 0 warning) · `pnpm build` ✅.
 
-## Đã xong
+## Đã xong Phase 3 — Core components
 
-### Hạ tầng
-
-| File | Nội dung |
+| File | Props / API (tóm tắt) |
 | --- | --- |
-| `package.json` `pnpm-workspace.yaml` | Vite 7 + React 19 + TS 5.9; script `dev/build/preview/typecheck/lint`; cho phép build script `esbuild` |
-| `vite.config.ts` | plugin React + Tailwind v4, alias `@` → `src` |
-| `tsconfig.json` | strict, `noUnusedLocals/Parameters`, `verbatimModuleSyntax`, path `@/*` |
-| `eslint.config.js` | flat config: js + typescript-eslint + react-hooks + react-refresh; tắt `only-export-components` cho `components/ui/**` và `lib/theme.tsx` |
-| `index.html` | `lang="vi"`, favicon SVG, script chống nháy theme trước paint, `theme-color` light/dark |
-| `public/favicon.svg` | logo tạm (nền amber, 3 ô) |
+| `src/components/data-display/StatCard.tsx` | `title, value, description?, icon?, tone?, href?, className?` |
+| `src/components/data-display/StatusBadge.tsx` | `children, tone?, dot?, className?` |
+| `src/components/data-display/EmptyState.tsx` | `title, description?, icon?, action?, className?` |
+| `src/components/data-display/LoadingState.tsx` | `rows?, label?, className?` (`role="status"`) |
+| `src/components/data-table/DataTable.tsx` | `columns, data, isLoading?, emptyState?, toolbar?, pageSize?, initialSorting?, onRowClick?, getRowId?, caption?, className?` |
+| `src/components/data-table/Pagination.tsx` | `pageIndex, pageCount, onPageChange, className?` |
+| `src/components/data-table/SortableHeader.tsx` | `column, label, className?` |
+| `src/components/filters/SearchInput.tsx` | `value, onValueChange, placeholder?, debounceMs?, label?, className?` |
+| `src/components/filters/FilterBar.tsx` | `children, onReset?, resetLabel?, className?` |
+| `src/components/filters/DateFilter.tsx` | `value {from?,to?}, onChange, fromLabel?, toLabel?, className?` |
+| `src/components/forms/FormField.tsx` | `name, label, description?, required?, className?, children({field,id,invalid})` — render prop |
+| `src/components/forms/FormSection.tsx` | `title, description?, columns?: 1\|2, children, className?` |
+| `src/components/forms/FormActions.tsx` | `submitLabel?, cancelLabel?, onCancel?, isSubmitting?, className?` |
+| `src/components/feedback/ConfirmDialog.tsx` | `open, onOpenChange, title, description?, confirmLabel?, cancelLabel?, tone?: "default"\|"danger", onConfirm` |
+| `src/components/navigation/Breadcrumbs.tsx` | `items: {label, href?}[], className?` |
+| `src/hooks/use-breadcrumbs.ts` | suy breadcrumb từ `config/nav.ts` + URL |
 
-### Design system
+Sửa bổ sung ngoài danh sách component:
 
-| File | Nội dung |
+| File | Thay đổi |
 | --- | --- |
-| `src/styles/globals.css` | Tailwind v4 `@theme inline`: map toàn bộ token shadcn (background/card/primary/…/chart/sidebar), radius scale, `--spacing-header/sidebar/sidebar-collapsed`, `--container-page: 90rem`; light = hex từ `baolochp`, dark = oklch neutral; font Be Vietnam Pro |
-| `src/components/ui/*` (20 file) | shadcn/ui (Radix, style `radix-nova`): avatar badge button checkbox command dialog dropdown-menu input input-group label popover select separator sheet skeleton sonner switch table tabs textarea tooltip |
-| `src/lib/theme.tsx` | ThemeProvider + `useTheme` (`light/dark/system`), lưu `localStorage`, theo `prefers-color-scheme` |
-| `src/lib/utils.ts` | `cn` (shadcn 4.x dùng package `cn`) |
-| `src/app/providers/index.tsx` | ThemeProvider + TooltipProvider(200ms) + Toaster (theme theo resolvedTheme) |
+| `src/components/layout/AdminShell.tsx` | skip link "Bỏ qua tới nội dung" (tab stop đầu tiên), render `Breadcrumbs` đầu nội dung |
+| `src/components/layout/AdminSidebar.tsx` | nav collapsed dùng `Tooltip` (thay `title` native) + `aria-label` |
+| `src/styles/globals.css` | thêm token `--success` `--warning` `--info` (light hex, dark oklch) + map `@theme inline` |
+| `src/components/ui/field.tsx` | shadcn `field` (registry 4.x không còn `form`) |
+| `src/pages/ComponentsPage.tsx` | trang showcase: StatCard, StatusBadge, DataTable + filter, form RHF+Zod, ConfirmDialog, LoadingState |
+| `src/app/routes.tsx` `src/config/nav.ts` | route + nav item `/components` ("UI Kit", icon `Blocks`) |
+| `vite.config.ts` | `manualChunks`: react / radix / table / forms |
+| `eslint.config.js` | tắt `react-hooks/incompatible-library` riêng cho `DataTable.tsx` (TanStack Table trả hàm không memoize được) |
+| `docs/components.md` | **mới** — bảng props + snippet cho 16 component |
+| `docs/architecture.md` | D3 → `radix-nova`; thêm D10–D13; cập nhật cây thư mục + Phase 3 |
+| `UI_GUIDELINES.md` | token `success/warning/info`, bảng "Component usage", a11y skip link + row-click |
 
-### Layout & navigation
+### Đã kiểm (Chrome headless, puppeteer-core)
 
-| File | Nội dung |
-| --- | --- |
-| `src/layouts/AdminLayout.tsx` | layout route: `AdminShell` + `Outlet`, truyền `demoUser` |
-| `src/components/layout/AdminShell.tsx` | shell `h-dvh`, chỉ `<main>` cuộn, reset scroll khi đổi route, đóng drawer khi ≥1024px |
-| `src/components/layout/AdminSidebar.tsx` | docked 16rem / collapsed 4.75rem (lưu localStorage, có `title` + `aria-label`), drawer mobile bằng `Sheet`, group nav + active state |
-| `src/components/layout/AdminHeader.tsx` | menu mobile, theme toggle, menu tài khoản (tên/email/vai trò + link Cài đặt); **không** chứa page title |
-| `src/components/layout/PageHeader.tsx` | title + description + actions (actions full-width trên mobile) |
-| `src/components/common/ThemeToggle.tsx` | dropdown Sáng / Tối / Theo hệ thống, check ở mục đang chọn |
-| `src/config/site.ts` | `site` (name/shortName/description) + `demoUser` |
-| `src/config/nav.ts` | 3 group / 6 item — nguồn duy nhất cho sidebar (breadcrumb Phase 3 dùng lại) |
-| `src/hooks/use-stored-value.ts` | đọc/ghi localStorage an toàn + `SIDEBAR_COLLAPSED_KEY` |
-| `src/types/common.ts` | `AdminUser` |
+- 1280 / 768 / 375 px: không tràn trang, **card bảng không còn vượt viewport** (đã sửa bằng `min-w-0` ở gốc `DataTable`); ở 375 bảng cuộn ngang trong card, các section dưới (form, LoadingState) cuộn tới được.
+- Light + dark: token mới đọc rõ ở cả hai theme.
+- Sắp xếp cột: đổi thứ tự ✅. Tìm kiếm debounce: 12 → 1 dòng, xoá lọc → 5 dòng/trang ✅.
+- Phân trang: "Trang 2 / 3" ✅. Validate form: `["Tên tối thiểu 2 ký tự","Email không hợp lệ"]` ✅, submit hợp lệ → toast ✅.
+- ConfirmDialog: xoá → **1 toast** "Đã xoá…", dòng biến mất; Huỷ → giữ nguyên ✅.
+- Row click: click ô → toast chọn dòng; Enter trên dòng → toast; Enter trên nút xoá → mở dialog, **không** phát sinh toast chọn dòng ✅.
+- Bàn phím: Tab đầu tiên = skip link; tooltip nav collapsed hiện "Khách hàng" ✅.
+- Console: 0 error, 0 warning; không request 4xx ✅.
 
-### Routing & trang
+## Dependencies
 
-| File | Nội dung |
-| --- | --- |
-| `src/app/routes.tsx` | `createBrowserRouter`: `/`, `/customers`, `/products`, `/orders`, `/reports`, `/settings`, `*` |
-| `src/app/App.tsx` | `AppProviders` + `RouterProvider` |
-| `src/main.tsx` | font (400/500/600/700), CSS, StrictMode |
-| `src/pages/ComingSoonPage.tsx` | trang tạm (PageHeader + ghi chú Phase 4) |
-| `src/pages/ErrorPage.tsx` | dùng cho cả `*` và `errorElement`, tự có padding/container |
+Không thêm dependency nào ở Phase 3 (TanStack Table / RHF / Zod / Sonner / date-fns đã cài từ Phase 2). Chỉ thêm 1 file shadcn: `src/components/ui/field.tsx`.
 
-### Đã kiểm bằng trình duyệt (Chrome headless, puppeteer-core)
+Bundle sau build: `index` 361 kB (gzip 113) · `radix` 128 (42) · `forms` 121 (38) · `react` 99 (34) · `table` 51 (14) · CSS 98 kB (gzip 16). Không còn cảnh báo chunk > 500 kB.
 
-- 1280 / 768 / 375 px: không tràn ngang, sidebar docked ở ≥1024, drawer ở nhỏ hơn.
-- Drawer mở bằng nút Menu, đóng bằng `Esc` ✅.
-- Collapse sidebar → 76px, icon-only, giữ trạng thái sau F5 ✅.
-- Theme: đổi sang Tối → `.dark` + `localStorage.adk-theme="dark"`, không nháy khi F5 ✅.
-- Điều hướng `/customers` đổi `h1` + active nav ✅. `/khong-ton-tai` → "Không tìm thấy trang" ✅.
-- Console: **0 error, 0 warning**, không request 4xx ✅.
+## Vấn đề chưa giải quyết
 
-## Dependencies đã cài
+1. **Chưa có `ErrorState`** — Phase 3 roadmap cũ có, nhưng demo chưa có luồng lỗi thật; để lại khi làm list template ở Phase 4 (sẽ dùng cùng empty/loading).
+2. **`DataTable` chỉ phân trang/sắp xếp client** — chưa có `manualPagination`/`manualSorting`; thêm khi có API thật (ghi ở `docs/architecture.md` §3).
+3. **Build in cảnh báo của zod**: `node_modules/.../zod/v4/core/regexes.js contains an annotation that Rollup cannot interpret` — phát ra từ dependency, không phải code repo; bỏ qua.
+4. **Form mobile**: nút submit nằm trên nút Huỷ (`flex-col-reverse`). Nếu muốn submit ở dưới cho dễ với ngón tay thì đổi 1 dòng trong `FormActions`.
+5. **Commit**: 2 commit Phase 1 + Phase 2 đã có; Phase 3 chưa commit, chờ xác nhận (gộp 1 commit hay tách theo nhóm component).
 
-Runtime: react 19.3 · react-dom 19.3 · react-router 7.18 · @tanstack/react-table 8.21 · react-hook-form 7.91 · @hookform/resolvers 7.0 · zod 4.6 · sonner 2.0 · recharts 3.10 · date-fns 4.4 · lucide-react 1.66 · radix-ui 1.8 · cmdk 1.1 · class-variance-authority 0.7 · cn 0.5 · tailwind-merge (transitive) · tw-animate-css 1.4 · @fontsource/be-vietnam-pro 5.3 · shadcn 4.23 (cung cấp `shadcn/tailwind.css`).
+## Việc kế tiếp (Phase 4 — Page templates, chờ xác nhận)
 
-Dev: vite 7.3 · @vitejs/plugin-react 5.2 · typescript 5.9 · tailwindcss + @tailwindcss/vite 4.3 · eslint 9 + typescript-eslint 8 + react-hooks 7 + react-refresh 0.5 · globals 17 · @types/{node,react,react-dom}.
-
-Đã bỏ: `@fontsource-variable/geist`, `clsx`, `tailwind-merge` (dư — `cn` đã gồm) do shadcn init tự thêm.
-
-## Chưa làm (có chủ đích)
-
-- Breadcrumb, CommandMenu, DataTable, StatCard, form components → Phase 3.
-- 6 page template + page demo thật → Phase 4 (hiện là `ComingSoonPage`).
-- Lazy route, page titles theo route, breadcrumb từ `config/nav.ts` → Phase 3–4 (D8).
-- `docs/{design-system,components,layouts,page-templates,coding-conventions,ai-workflow}.md`, 4 agent skill, LICENSE → Phase 5–6.
-- Nút "bỏ qua tới nội dung" (skip link) — nên thêm khi làm a11y pass ở Phase 3.
-- Tooltip cho icon khi sidebar collapsed (hiện dùng `title` native).
-
-## Việc kế tiếp (Phase 3 — Core components)
-
-1. `components/common/`: `PageContainer`, `SectionCard`, `IconAction`.
-2. `components/data-display/`: `StatCard` (tone generic), `StatusBadge` (nhận `tone` từ page, không enum nghiệp vụ), `EmptyState`, `LoadingState`, `ErrorState`.
-3. `components/data-table/`: `DataTable<TData>` (TanStack Table 8) + `TableToolbar` + `Pagination` + `SortableHeader` + `SortableHeader` action; states loading/empty.
-4. `components/forms/`: `FormField`, `FormSection`, `FormActions` (RHF + Zod), `SearchInput` (debounce 300ms), `FilterBar`.
-5. `components/feedback/`: `ConfirmDialog`, `Alert` (shadcn `alert` cần add), `SuccessState`.
-6. `components/navigation/Breadcrumbs` đọc `config/nav.ts`.
-7. Sau mỗi nhóm: `pnpm typecheck && pnpm lint && pnpm build`, kiểm tra UI bằng màn hình thật.
-
-## Vấn đề cần xác nhận
-
-1. **Commit Phase 2?** (chưa commit gì; có thể gộp Phase 1 + 2 vào 1 commit hoặc 2 commit riêng).
-2. **License** (MIT / không license) — cần trước Phase 6.
-3. **Dark mode primary** đang là neutral trắng như `baolochp`; nếu muốn amber ở dark thì đổi 2 dòng trong `globals.css` (`.dark { --primary, --primary-foreground }`).
-4. **Font**: đang self-host qua `@fontsource` (4 weight, ~120 kB woff2) — nếu ưu tiên bundle nhỏ có thể giảm còn 400/600.
+1. `src/templates/`: `DashboardTemplate` (StatCard + chart Recharts + list gần đây), `ListTemplate` (PageHeader + FilterBar + DataTable + 3 state), `FormTemplate` (FormSection + FormActions + validation), `DetailTemplate` (descriptions + related), `SettingsTemplate` (Tabs + form).
+2. `src/pages/examples/` + `src/mocks/`: demo "quản lý khách hàng" và "sản phẩm" dùng mock data, thay dần `ComingSoonPage`.
+3. Chuyển route sang `lazy()` (D8) khi đã có page thật; page title theo route.
+4. Thêm `ErrorState` + luồng lỗi cho list template.
+5. Sau mỗi template: `pnpm typecheck && pnpm lint && pnpm build` + kiểm 3 breakpoint, light/dark.

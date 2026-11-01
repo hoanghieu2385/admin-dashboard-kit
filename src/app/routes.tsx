@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router"
 import { AdminLayout } from "@/layouts/AdminLayout"
 import { ComingSoonPage } from "@/pages/ComingSoonPage"
+import { ComponentsPage } from "@/pages/ComponentsPage"
 import { ErrorPage } from "@/pages/ErrorPage"
 
 export const router = createBrowserRouter([
@@ -28,6 +29,10 @@ export const router = createBrowserRouter([
       {
         path: "reports",
         element: <ComingSoonPage title="Báo cáo" description="Số liệu tổng hợp theo thời gian." />,
+      },
+      {
+        path: "components",
+        element: <ComponentsPage />,
       },
       {
         path: "settings",

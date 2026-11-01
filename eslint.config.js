@@ -29,6 +29,12 @@ export default tseslint.config(
     rules: { "react-refresh/only-export-components": "off" },
   },
   {
+    // useReactTable trả về hàm không memoize được — React Compiler chỉ bỏ qua component này,
+    // không phải lỗi code. Giữ bảng theo đúng API chính thức của TanStack Table.
+    files: ["src/components/data-table/DataTable.tsx"],
+    rules: { "react-hooks/incompatible-library": "off" },
+  },
+  {
     // Provider và hook export cùng file là chủ đích, không phải lỗi HMR.
     files: ["src/lib/theme.tsx"],
     rules: { "react-refresh/only-export-components": "off" },

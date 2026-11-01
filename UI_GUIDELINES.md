@@ -27,13 +27,18 @@ Khai báo trong `src/styles/globals.css` (đã chuẩn bị sẵn giá trị t�
 | `--muted-foreground` | `#64748b` | chữ phụ, mô tả |
 | `--accent` | `#fff7ed` | hover/active nhạt |
 | `--destructive` | `#dc2626` | xoá, lỗi |
+| `--success` | `#15803d` | trạng thái thành công/hoạt động |
+| `--warning` | `#b45309` | chờ xử lý, cảnh báo |
+| `--info` | `#1d4ed8` | thông tin, trung tính có nhấn |
 | `--border` / `--input` | `#e2e8f0` | viền |
 | `--ring` | `#b45309` | focus ring |
 | `--sidebar` | `#ffffff` | nền sidebar |
 | `--sidebar-accent` | `#fff7ed` | item active |
 | chart 1–5 | `#b45309` `#16a34a` `#d97706` `#2563eb` `#9333ea` | biểu đồ |
 
-Dark mode: neutrals `oklch` (nền `0.145`, card `0.205`), primary đảo thành sáng `0.922`. Dark **không** giữ amber làm primary để tránh chói — dùng neutral.
+Dark mode: neutrals `oklch` (nền `0.145`, card `0.205`), primary đảo thành sáng `0.922`. Dark **không** giữ amber làm primary để tránh chói — dùng neutral. `--success` / `--warning` / `--info` ở dark dùng oklch sáng hơn để đủ tương phản trên nền tối.
+
+Tone trạng thái dùng qua prop, không hardcode màu: `StatCard tone`, `StatusBadge tone` = `primary | success | warning | danger | info | neutral`.
 
 ### Typography
 
@@ -72,14 +77,18 @@ Dark mode: neutrals `oklch` (nền `0.145`, card `0.205`), primary đảo thành
 | --- | --- |
 | Nút | `Button` (variant: default/outline/ghost/destructive, size: sm/default/lg/icon) |
 | Icon-only | `Button size="icon" variant="ghost"` + `aria-label` (không tự làm nút icon trần) |
-| Form field | `FormField` (bọc `Label` + control + message lỗi) |
+| Form field | `FormField` (label + control + mô tả + lỗi) render-prop, bọc `Controller` |
+| Nhóm field | `FormSection` (card + tiêu đề, `columns={2}` khi đủ chỗ) |
+| Nút cuối form | `FormActions` (`onCancel`, `isSubmitting` → spinner + `aria-busy`) |
 | Bảng dữ liệu | `DataTable` generic, không tự viết `<table>` mới |
+| Cột sắp xếp | `SortableHeader` làm `header` của cột |
+| Phân trang | `Pagination` (DataTable tự render) |
 | Trạng thái rỗng | `EmptyState` (title + description + action) |
-| Đang tải | `Skeleton` đúng hình dạng nội dung, `role="status"` |
-| Lỗi | `ErrorState` với `onRetry` |
-| Xác nhận xoá | `ConfirmDialog` |
+| Đang tải | `LoadingState` (skeleton giữ nhịp layout, `role="status"`) |
+| Xác nhận xoá | `ConfirmDialog` (tone `danger`) |
 | Thông báo | `toast()` qua Sonner |
-| Filter | `FilterBar` + `Select` + `SearchInput` (debounce 300ms) |
+| Filter | `FilterBar` + `SearchInput` + `Select` + `DateFilter` |
+| Đường dẫn | `Breadcrumbs` + `useBreadcrumbs()` (suy ra từ `config/nav.ts`) |
 | Số liệu | `StatCard` (title, value, description, icon, tone, href) |
 | Trạng thái nghiệp vụ | `StatusBadge` với `tone` do page quyết định, **không** thêm enum vào kit |
 
@@ -102,6 +111,8 @@ Breakpoints Tailwind mặc định: `sm 640` · `md 768` · `lg 1024` · `xl 128
 - Dialog/Sheet dùng component shadcn (đã có focus trap, `Esc`).
 - Tương phản ≥ 4.5:1 cho chữ thường; không dùng `text-slate-400` cho nội dung quan trọng.
 - Điều hướng bàn phím: focus ring hiển thị rõ, không `outline-none` mà không thay thế.
+- Skip link "Bỏ qua tới nội dung" là tab stop đầu tiên (`AdminShell`), nhảy tới `#main-content`.
+- Dòng bảng có `onRowClick` phải: nhận focus, Enter/Space kích hoạt, và **bỏ qua** click phát ra từ control trong ô (nút xoá, link…).
 
 ## 7. Anti-patterns
 
