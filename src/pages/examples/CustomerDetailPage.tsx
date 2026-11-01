@@ -7,7 +7,7 @@ import { PageHeader } from "@/components/layout/PageHeader"
 import { Button } from "@/components/ui/button"
 import { formatCurrency, formatDate } from "@/lib/format"
 import { CUSTOMER_STATUS_META, customers } from "@/mocks/customers"
-import { ORDER_STATUS_META, orders } from "@/mocks/orders"
+import { ORDER_STATUS_META, orders } from "@/mocks/orders.mock"
 import { DetailTemplate } from "@/templates/detail/DetailTemplate"
 
 export function CustomerDetailPage() {

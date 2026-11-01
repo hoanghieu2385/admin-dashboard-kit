@@ -12,10 +12,10 @@ Demo tham chiếu: `src/pages/examples/` — dùng đúng template, mock nằm t
 
 | Template | Đường dẫn | Demo |
 | --- | --- | --- |
-| Dashboard | `@/templates/dashboard/DashboardTemplate` | `/` |
-| List | `@/templates/list/ListTemplate` | `/customers`, `/products` |
+| Dashboard | `@/templates/dashboard/DashboardTemplate` | `/`, `/reports` |
+| List | `@/templates/list/ListTemplate` | `/customers`, `/products`, `/orders` |
 | Form | `@/templates/form/FormTemplate` | `/customers/new`, `/customers/KH-1001/edit` |
-| Detail | `@/templates/detail/DetailTemplate` | `/customers/KH-1001` |
+| Detail | `@/templates/detail/DetailTemplate` | `/customers/KH-1001`, `/orders/DH-5028` |
 | Settings | `@/templates/settings/SettingsTemplate` | `/settings` |
 
 `FormTemplate` dùng chung cho **Create và Edit**; `mode` chỉ đổi nhãn submit mặc định. Không có template Create/Edit riêng.
@@ -264,11 +264,11 @@ Breakpoint kiểm tra: **375 / 768 / 1280**. Không dùng `h-screen`; shell đã
 | URL | Template |
 | --- | --- |
 | `/` | Dashboard |
-| `/customers`, `/products` | List |
+| `/customers`, `/products`, `/orders` | List |
 | `/customers/new`, `/customers/:customerId/edit` | Form |
-| `/customers/:customerId` | Detail |
+| `/customers/:customerId`, `/orders/:orderId` | Detail |
+| `/reports` | Dashboard |
 | `/settings` | Settings |
 | `/components` | Showcase component (không phải template) |
-| `/orders`, `/reports` | ComingSoon (Phase 5) |
 
 Route khai báo `lazy` trong `src/app/routes.tsx`; `HydrateFallback` của route gốc render shell + `LoadingState` khi truy cập trực tiếp bằng URL. 404 dùng `ErrorPage`.

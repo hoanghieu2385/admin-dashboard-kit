@@ -44,12 +44,12 @@ admin-dashboard-kit/
 │   │   └── common/      PageContainer, SectionCard, IconAction
 │   ├── layouts/        AdminLayout.tsx
 │   ├── templates/      dashboard/ list/ form/ detail/ settings/
-│   ├── pages/          examples/ (dashboard, customers, customer form/detail, products, settings)
+│   ├── pages/          examples/ (dashboard, customers, customer form/detail, products, settings), orders/, reports/
 │   ├── hooks/          use-stored-value, use-breadcrumbs
-│   ├── lib/            utils(cn), format, theme
+│   ├── lib/            utils(cn), format, theme, order-utils, report-utils
 │   ├── config/         nav.ts, site.ts
-│   ├── types/          common.ts (AdminUser…)
-│   ├── mocks/          customers.ts, products.ts, orders.ts, dashboard.ts
+│   ├── types/          common.ts (AdminUser…), order.ts, report.ts
+│   ├── mocks/          customers.ts, products.ts, orders.mock.ts, reports.mock.ts, dashboard.ts
 │   └── styles/         globals.css (tokens + theme)
 ├── components.json  package.json  pnpm-lock.yaml  tsconfig.json  vite.config.ts  eslint.config.js
 ```
@@ -131,7 +131,7 @@ Dashboard (stats + chart + hoạt động + section tùy biến), List (filters 
 
 ### Phase 5 — Demo & docs
 
-Demo nghiệp vụ "quản lý khách hàng" + "sản phẩm" bằng mock data; 4 agent skills; `docs/components.md`, `docs/page-templates.md`, `docs/layouts.md`, `docs/design-system.md`, `docs/coding-conventions.md`, `docs/ai-workflow.md`; README.
+Demo nghiệp vụ "quản lý khách hàng", "sản phẩm", "đơn hàng", "báo cáo" bằng mock data; 4 agent skills; `docs/components.md`, `docs/page-templates.md`, `docs/layouts.md`, `docs/design-system.md`, `docs/coding-conventions.md`, `docs/ai-workflow.md`; README.
 
 ### Phase 6 — Template readiness
 
@@ -159,3 +159,5 @@ Demo nghiệp vụ "quản lý khách hàng" + "sản phẩm" bằng mock data; 
 | D16 | `SettingsTemplate` mount mọi section, ẩn bằng `hidden` | field ở tab không active vẫn giữ value và được validate khi submit toàn form |
 | D17 | `SectionCard`, `DescriptionList`, `ErrorState` là building block dùng chung | tránh lặp card/description/error markup trong từng template và page |
 | D18 | Mock tách theo domain (`customers`, `products`, `orders`, `dashboard`) | page tự lọc/format; template không import `mocks/` |
+| D19 | `mocks/orders.mock.ts` là nguồn đơn hàng duy nhất | 30 đơn; tổng tiền sinh bằng `createOrder()` để không lệch số; báo cáo đọc lại từ đây, không hardcode KPI |
+| D20 | Tổng hợp báo cáo ở `lib/report-utils.ts` | hàm thuần nhận `orders` + khoảng ngày; loại đơn `cancelled` khỏi doanh thu/AOV/top sản phẩm; page chỉ render |

@@ -2,7 +2,6 @@ import type { ComponentType } from "react"
 import { createBrowserRouter } from "react-router"
 import { AdminLayout } from "@/layouts/AdminLayout"
 import { AdminLoading } from "@/layouts/AdminLoading"
-import { ComingSoonPage } from "@/pages/ComingSoonPage"
 import { ErrorPage } from "@/pages/ErrorPage"
 
 const lazyPage = (load: () => Promise<{ default: ComponentType }>) => async () => ({
@@ -42,11 +41,15 @@ export const router = createBrowserRouter([
       },
       {
         path: "orders",
-        element: <ComingSoonPage title="Đơn hàng" description="Theo dõi và xử lý đơn hàng." />,
+        lazy: lazyPage(() => import("@/pages/orders/OrdersPage")),
+      },
+      {
+        path: "orders/:orderId",
+        lazy: lazyPage(() => import("@/pages/orders/OrderDetailPage")),
       },
       {
         path: "reports",
-        element: <ComingSoonPage title="Báo cáo" description="Số liệu tổng hợp theo thời gian." />,
+        lazy: lazyPage(() => import("@/pages/reports/ReportsPage")),
       },
       {
         path: "components",

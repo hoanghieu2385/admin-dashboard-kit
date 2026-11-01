@@ -41,7 +41,8 @@ export function ConfirmDialog({
     if (open) return
     const track = (event: FocusEvent) => {
       const target = event.target as HTMLElement | null
-      if (target?.closest('[role="alertdialog"]')) return
+      // Bỏ qua focus bên trong dialog và menu: item menu unmount khi chọn nên không trả focus được.
+      if (target?.closest('[role="alertdialog"], [role="menu"], [role="listbox"]')) return
       restoreRef.current = target
     }
     document.addEventListener("focusin", track)
