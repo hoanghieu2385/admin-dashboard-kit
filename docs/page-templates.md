@@ -89,7 +89,7 @@ Responsive: stats `1 → 2 (sm) → 4 (xl)` cột; chart + activity `1 → 2/3 +
 | `initialSorting` | `SortingState` | `[]` | |
 | `onRowClick` | `(row: TData) => void` | — | click/Enter mở chi tiết |
 | `getRowId` | `(row, index) => string` | — | |
-| `caption` | `string` | — | mô tả bảng cho screen reader |
+| `caption` | `string` | — | mô tả bảng, render phía trên bảng |
 | `className` | `string` | — | |
 
 ### Ví dụ
@@ -110,6 +110,8 @@ Responsive: stats `1 → 2 (sm) → 4 (xl)` cột; chart + activity `1 → 2/3 +
 ```
 
 `DataTable` tự phân trang/sắp xếp client và cuộn ngang trong card. Ở mobile bảng > 5 cột sẽ cuộn ngang; nếu cần card list riêng thì dựng page riêng, không nhét vào template.
+
+`filters` được `ListTemplate` bọc trong `FilterBar`; chỉ truyền control (`SearchInput`, `Select`, `DateFilter`), không truyền thêm `FilterBar` lồng bên trong.
 
 Bọc `columns` trong `useMemo` ở page: `flexRender` coi mỗi cell function là một component, nên mảng mới mỗi render sẽ remount toàn bộ ô.
 

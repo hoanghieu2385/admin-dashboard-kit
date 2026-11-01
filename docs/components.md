@@ -10,8 +10,15 @@ Demo chạy được: `/components` (`src/pages/ComponentsPage.tsx`).
 | Filters | `SearchInput`, `FilterBar`, `DateFilter` |
 | Forms | `FormField`, `FormSection`, `FormActions` |
 | Feedback | `ConfirmDialog` |
-| Common | `SectionCard` |
-| Layout / navigation | `PageHeader`, `Breadcrumbs`, `useBreadcrumbs` |
+| Common | `SectionCard`, `ThemeToggle` |
+| Layout / navigation | `AdminShell`, `AdminHeader`, `AdminSidebar`, `PageHeader`, `Breadcrumbs`, `useBreadcrumbs` |
+
+Quy ước chung:
+
+- Import tuyệt đối: `@/components/<nhóm>/<Tên>`; không import `components/ui/*` trực tiếp trong page nếu đã có component admin tương ứng.
+- Ghép class bằng `cn()` từ `@/lib/utils`; không hardcode màu.
+- Component nhận `className` để override; không fork `components/ui/**`.
+- Component không import `mocks/`, không gọi API, không dùng `useParams`/`useNavigate` (trừ layout/navigation được phép biết router).
 
 ## 1. Data display
 
@@ -117,7 +124,7 @@ const STATUS = { active: { label: "Đang hoạt động", tone: "success" }, blo
 | `initialSorting` | `SortingState` | `[]` | |
 | `onRowClick` | `(row: TData) => void` | — | thêm `cursor-pointer`, `tabIndex`, Enter/Space; click từ control trong ô bị bỏ qua |
 | `getRowId` | `(row, index) => string` | — | |
-| `caption` | `string` | — | `<caption>` cho screen reader |
+| `caption` | `string` | — | `<caption>` hiển thị phía trên bảng, mô tả ngữ cảnh cho mọi người |
 | `className` | `string` | — | |
 
 Phân trang + sắp xếp chạy phía client. Bảng rộng hơn màn hình sẽ cuộn ngang **bên trong** card (`min-w-0` ở gốc component).
@@ -302,6 +309,34 @@ Card nội dung có header tùy chọn (title + description + actions). Dùng ch
 
 ## 7. Layout & navigation
 
+### AdminShell — `@/components/layout/AdminShell`
+
+| Prop | Kiểu | Ghi chú |
+| --- | --- | --- |
+| `user` | `AdminUser` | truyền cho header |
+| `children` | `ReactNode` | nội dung route |
+
+Render sidebar + header + `<main id="main-content">`; chỉ `<main>` scroll, reset scroll khi đổi route, có skip link và breadcrumb. Thường chỉ dùng một lần trong `AdminLayout`.
+
+### AdminHeader — `@/components/layout/AdminHeader`
+
+| Prop | Kiểu | Ghi chú |
+| --- | --- | --- |
+| `user` | `AdminUser` | tên/email/role |
+| `onMenuClick` | `() => void` | mở drawer mobile |
+
+Không nhận title trang; title thuộc `PageHeader`.
+
+### AdminSidebar — `@/components/layout/AdminSidebar`
+
+| Prop | Kiểu | Ghi chú |
+| --- | --- | --- |
+| `collapsed` | `boolean` | trạng thái docked thu gọn |
+| `onToggleCollapse` | `() => void` | lưu vào `adk-sidebar-collapsed` |
+| `mobileOpen` / `onMobileOpenChange` | `boolean` / `(open: boolean) => void` | drawer dưới `lg` |
+
+Đọc nav từ `config/nav.ts`; collapsed hiện icon + tooltip, item active dùng `aria-current="page"`.
+
 ### PageHeader — `@/components/layout/PageHeader`
 
 | Prop | Kiểu |
@@ -311,6 +346,10 @@ Card nội dung có header tùy chọn (title + description + actions). Dùng ch
 | `children` | `ReactNode` (actions bên phải) |
 
 Nơi duy nhất render `<h1>` của trang. Actions tự full-width trên mobile.
+
+### ThemeToggle — `@/components/common/ThemeToggle`
+
+Không có props. Dropdown chọn Sáng / Tối / Theo hệ thống; dùng `useTheme` từ `@/lib/theme`.
 
 ### Breadcrumbs — `@/components/navigation/Breadcrumbs`
 

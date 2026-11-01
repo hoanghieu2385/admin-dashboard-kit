@@ -12,3 +12,5 @@ dist-ssr/
 .vite/
 coverage/
 .serena/
+.claude/settings.local.json
+*.tsbuildinfo
